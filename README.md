@@ -4,7 +4,6 @@ Executable reference implementations supporting research on large-scale systems,
 
 ## How this work is organised
 - **Research essays (Substack):** https://harveygill.substack.com
-- **Home (Maverick Studios):** https://maverickstudios.net
 - **LinkedIn:** https://www.linkedin.com/in/gillharvey
 
 ## What you’ll find here
