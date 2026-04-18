@@ -29,7 +29,8 @@ How to build AI systems that can act reliably — deployed, evaluated, and capab
 
 Built layer by layer: runtime → evaluation → environments → architecture → learning. Each essay mirrors a versioned codebase milestone.
 
-(./executable-world-models/blob/main/docs/executable_world_models_readme.png)
+
+![Executable World Models — release roadmap](./executable-world-models/blob/main/docs/executable_world_models_readme.png)
 
 **Essays:** [harveygill.substack.com/p/executable-world-models](https://harveygill.substack.com/p/executable-world-models)
 **Code:** [MaverickHQ/executable-world-models](https://github.com/MaverickHQ/executable-world-models)
