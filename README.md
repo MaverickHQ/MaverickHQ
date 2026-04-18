@@ -1,30 +1,55 @@
 # MaverickHQ
 
-Executable reference implementations supporting research on large-scale systems, data platforms, and applied AI — grounded in real-world delivery where simplicity matters more than novelty.
+Research essays and executable reference implementations for applied AI,
+systems architecture, and production data platforms.
 
-## How this work is organised
-- **Research essays (Substack):** https://harveygill.substack.com
-- **LinkedIn:** https://www.linkedin.com/in/gillharvey
+Essays → [harveygill.substack.com](https://harveygill.substack.com)
+Code → here.
 
-## What you’ll find here
-- Runnable reference implementations linked from specific essays and series
-- System-level examples focused on clarity, constraints, and operational reality
+---
 
-## Featured
-- **Beyond Tokens** — reference implementation supporting the research series
+## Active series
 
-If you’re evaluating quickly: start with the featured repositories and follow links back to the associated essays.
-<!--
-**MaverickHQ/MaverickHQ** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+### Beyond Tokens · 5 essays · complete
 
-Here are some ideas to get you started:
+Why world models matter — and why token-based AI fails when decisions must persist over time.
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+The core argument: modern AI failures are almost never the result of bad models. They are almost always architectural mismatches. The alternative: systems built around explicit world models with persistent state, defined dynamics, and verifiable transitions.
+
+(https://github.com/MaverickHQ/beyond-tokens/blob/main/docs/beyond_tokens_readme.png)
+
+**Essays:** [harveygill.substack.com/p/beyond-tokens](https://harveygill.substack.com/p/beyond-tokens)
+**Code:** [MaverickHQ/beyond-tokens](https://github.com/MaverickHQ/beyond-tokens)
+
+---
+
+### Executable World Models · 5 essays · in progress
+
+How to build AI systems that can act reliably — deployed, evaluated, and capable of improving from their own experiments.
+
+Built layer by layer: runtime → evaluation → environments → architecture → learning. Each essay mirrors a versioned codebase milestone.
+
+(https://github.com/MaverickHQ/executable-world-models/blob/main/docs/executable_world_models_readme.png)
+
+**Essays:** [harveygill.substack.com/p/executable-world-models](https://harveygill.substack.com/p/executable-world-models)
+**Code:** [MaverickHQ/executable-world-models](https://github.com/MaverickHQ/executable-world-models)
+
+The architecture assembled across the series:
+
+> `tokens → models → agents → constraints → artifacts`
+> `→ evaluation → experiments → environments → evidence → policy`
+
+---
+
+## About
+
+Harvey Gill — systems architect, applied AI practitioner, technical writer.
+
+Large-scale systems design, production data platforms, and applied AI in operational environments. The work here is pragmatic: how systems are actually built and operated, where theory breaks down under real constraints, and what it takes to make AI trustworthy enough to act.
+
+**Substack:** [harveygill.substack.com](https://harveygill.substack.com)
+**LinkedIn:** [linkedin.com/in/gillharvey](https://www.linkedin.com/in/gillharvey)
+
+---
+
+*Ideas first. Executable artefacts that make them concrete.*
