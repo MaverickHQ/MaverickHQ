@@ -46,7 +46,7 @@ tokens → models → agents → constraints → artifacts
 
 ## About
 
-Harvey Gill — systems architect, applied AI practitioner, technical writer.
+Harvey Gill — architect, developer, applied AI practitioner, technical writer.
 
 Large-scale systems design, production data platforms, and applied AI in
 operational environments. The work here is pragmatic: how systems are
