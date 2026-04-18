@@ -16,7 +16,7 @@ Why world models matter — and why token-based AI fails when decisions must per
 
 The core argument: modern AI failures are almost never the result of bad models. They are almost always architectural mismatches. The alternative: systems built around explicit world models with persistent state, defined dynamics, and verifiable transitions.
 
-(https://github.com/MaverickHQ/beyond-tokens/blob/main/docs/beyond_tokens_readme.png)
+(./beyond-tokens/blob/main/docs/beyond_tokens_readme.png)
 
 **Essays:** [harveygill.substack.com/p/beyond-tokens](https://harveygill.substack.com/p/beyond-tokens)
 **Code:** [MaverickHQ/beyond-tokens](https://github.com/MaverickHQ/beyond-tokens)
@@ -29,7 +29,7 @@ How to build AI systems that can act reliably — deployed, evaluated, and capab
 
 Built layer by layer: runtime → evaluation → environments → architecture → learning. Each essay mirrors a versioned codebase milestone.
 
-(https://github.com/MaverickHQ/executable-world-models/blob/main/docs/executable_world_models_readme.png)
+(./executable-world-models/blob/main/docs/executable_world_models_readme.png)
 
 **Essays:** [harveygill.substack.com/p/executable-world-models](https://harveygill.substack.com/p/executable-world-models)
 **Code:** [MaverickHQ/executable-world-models](https://github.com/MaverickHQ/executable-world-models)
