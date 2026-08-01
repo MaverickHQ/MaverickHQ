@@ -2,12 +2,12 @@ name: M4 Competition daily scan
 
 on:
   workflow_dispatch:
-  schedule:
-    # Backup only — the primary trigger is the daily Claude session at 4pm UK,
-    # which dispatches this workflow and publishes the page afterwards. This
-    # backup fires later (16:40 UTC) so data still refreshes if that session
-    # ever fails to run. 15:xx UTC = 4pm UK during BST.
-    - cron: "40 16 * * *"
+  push:
+    branches: [claude/bmw-m4-m3-search-9cjc9p]
+    paths:
+      - "m4-search/.trigger"
+      - ".github/workflows/m4-scan.yml"
+      - "m4-search/scripts/scan.mjs"
 
 permissions:
   contents: write
