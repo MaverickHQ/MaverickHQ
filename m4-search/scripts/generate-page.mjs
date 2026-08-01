@@ -52,6 +52,9 @@ const drops = live.filter((l) => {
   return h.length >= 2 && h[h.length - 1].price < h[h.length - 2].price;
 });
 
+// First new-today car in display order (in-budget by score, then watch list).
+const firstNewId = [...inBudget, ...watch].find((l) => l.firstSeen === today)?.id ?? null;
+
 const updated = new Date(data.updatedAt)
   .toLocaleString('en-GB', {
     timeZone: 'Europe/London',
@@ -103,7 +106,7 @@ function entry(l, idx, { top = false } = {}) {
     .join('&ensp;·&ensp;');
 
   return `
-  <li class="entry${top ? ' is-top' : ''}">
+  <li class="entry${top ? ' is-top' : ''}" id="e-${l.id}">
     <span class="no" aria-hidden="true">${String(idx).padStart(2, '0')}</span>
     <a class="shot" href="${esc(l.url)}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
       ${src ? `<img src="${src}" alt="">` : `<span class="noimg">PHOTO ON LISTING</span>`}
@@ -202,15 +205,22 @@ const html = `<title>M4 Competition Watch</title>
 
   /* ---------- stat strip ---------- */
   .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
-  .stats > div { padding: 22px 4px 20px; border-left: 1px solid var(--line); padding-left: 18px; }
-  .stats > div:first-child { border-left: none; padding-left: 0; }
+  .stats > * { padding: 22px 4px 20px; border-left: 1px solid var(--line); padding-left: 18px; }
+  .stats > *:first-child { border-left: none; padding-left: 0; }
   .stats .n { font-family: 'Archivo Black', system-ui, sans-serif; font-size: clamp(28px, 4vw, 44px); line-height: 1; }
   .stats .n.accent { color: var(--accent); }
   .stats .micro { margin-top: 6px; display: block; color: var(--mute); }
+  a.stat-link { text-decoration: none; color: inherit; }
+  a.stat-link .jump { color: var(--accent); }
+  @media (hover: hover) { a.stat-link:hover { background: var(--wash); } a.stat-link:hover .micro { color: var(--ink); } }
+  a.stat-link:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  @media (prefers-reduced-motion: no-preference) { html, body { scroll-behavior: smooth; } }
+  section, .entry { scroll-margin-top: 24px; }
+  .entry:target { background: var(--wash); box-shadow: inset 3px 0 0 var(--accent); }
   @media (max-width: 640px) {
     .stats { grid-template-columns: 1fr 1fr; }
-    .stats > div:nth-child(3) { border-left: none; padding-left: 0; }
-    .stats > div:nth-child(1), .stats > div:nth-child(2) { border-bottom: 1px solid var(--line); }
+    .stats > *:nth-child(3) { border-left: none; padding-left: 0; }
+    .stats > *:nth-child(1), .stats > *:nth-child(2) { border-bottom: 1px solid var(--line); }
   }
 
   /* ---------- section heads ---------- */
@@ -305,8 +315,16 @@ const html = `<title>M4 Competition Watch</title>
 
   <div class="stats">
     <div><span class="n accent display">${inBudget.length}</span><span class="micro">In budget</span></div>
-    <div><span class="n display">${watch.length}</span><span class="micro">Worth watching</span></div>
-    <div><span class="n display">${newToday.length}</span><span class="micro">New today</span></div>
+    ${
+      watch.length
+        ? `<a class="stat-link" href="#watching"><span class="n display">${watch.length}</span><span class="micro">Worth watching<span class="jump" aria-hidden="true"> ↓</span></span></a>`
+        : `<div><span class="n display">0</span><span class="micro">Worth watching</span></div>`
+    }
+    ${
+      firstNewId
+        ? `<a class="stat-link" href="#e-${firstNewId}"><span class="n display">${newToday.length}</span><span class="micro">New today<span class="jump" aria-hidden="true"> ↓</span></span></a>`
+        : `<div><span class="n display">0</span><span class="micro">New today</span></div>`
+    }
     <div><span class="n display">${drops.length}</span><span class="micro">Price drops</span></div>
   </div>
 
@@ -324,7 +342,7 @@ const html = `<title>M4 Competition Watch</title>
 
   ${
     watch.length
-      ? `<section>
+      ? `<section id="watching">
     <div class="sechead">
       <h2>Worth watching</h2>
       <span class="micro">${gbp(criteria.priceMax)}–${gbp(criteria.watchPriceMax)} · negotiable into range</span>
