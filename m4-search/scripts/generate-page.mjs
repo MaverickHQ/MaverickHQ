@@ -297,6 +297,23 @@ const html = `<title>M4 Competition Watch</title>
 
   footer { margin-top: 56px; padding-top: 18px; border-top: 3px solid var(--line-strong); }
   footer p { margin: 0 0 6px; font-size: 12px; color: var(--mute); max-width: 86ch; }
+
+  /* ---------- blocked-navigation fallback sheet ---------- */
+  .sheet-veil { position: fixed; inset: 0; background: rgba(13, 13, 14, 0.5); display: none;
+    align-items: center; justify-content: center; padding: 22px; z-index: 50; }
+  .sheet-veil.on { display: flex; }
+  .sheet { background: var(--paper); color: var(--ink); border: 3px solid var(--line-strong);
+    max-width: 520px; width: 100%; padding: 24px; }
+  .sheet h4 { margin: 0 0 6px; font-family: 'Archivo Black', system-ui, sans-serif; font-weight: 400;
+    font-size: 16px; text-transform: uppercase; }
+  .sheet p { margin: 0 0 14px; font-size: 13px; color: var(--ink2); }
+  .sheet .urlrow { display: flex; gap: 8px; }
+  .sheet input { flex: 1; min-width: 0; font: 13px/1.4 ui-monospace, monospace; color: var(--ink);
+    background: transparent; border: 1px solid var(--line); padding: 9px 10px; }
+  .sheet button { font-size: 12px; font-weight: 750; letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--ink); color: var(--paper); border: 0; padding: 9px 16px; cursor: pointer; }
+  .sheet button.ghost { background: transparent; color: var(--ink2); border: 1px solid var(--line); margin-top: 10px; }
+  .sheet button:focus-visible, .sheet input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 </style>
 
 <div class="wrap">
@@ -357,6 +374,65 @@ const html = `<title>M4 Competition Watch</title>
     <p>Always confirm with an HPI check, full MOT history and an independent inspection before buying. Photos © their listing sources — follow the listing link for full galleries.</p>
   </footer>
 </div>
+
+<div class="sheet-veil" id="veil" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+  <div class="sheet">
+    <h4 id="sheet-title">Open the listing</h4>
+    <p>This viewer blocked the redirect. Copy the link and paste it into your browser:</p>
+    <div class="urlrow">
+      <input id="sheet-url" type="text" readonly value="">
+      <button id="sheet-copy" type="button">Copy</button>
+    </div>
+    <button id="sheet-close" class="ghost" type="button">Close</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var veil = document.getElementById('veil');
+  var input = document.getElementById('sheet-url');
+  var copyBtn = document.getElementById('sheet-copy');
+
+  function showSheet(url) {
+    input.value = url;
+    copyBtn.textContent = 'Copy';
+    veil.classList.add('on');
+    input.focus();
+    input.select();
+  }
+  function hideSheet() { veil.classList.remove('on'); }
+
+  document.getElementById('sheet-close').addEventListener('click', hideSheet);
+  veil.addEventListener('click', function (e) { if (e.target === veil) hideSheet(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hideSheet(); });
+
+  copyBtn.addEventListener('click', function () {
+    input.select();
+    var done = function () { copyBtn.textContent = 'Copied ✓'; };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(input.value).then(done, function () {
+        try { document.execCommand('copy'); done(); } catch (err) { /* text stays selected for manual copy */ }
+      });
+    } else {
+      try { document.execCommand('copy'); done(); } catch (err) { /* text stays selected for manual copy */ }
+    }
+  });
+
+  // External links: try a real new tab; if the sandbox blocks it, offer the URL to copy.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href^="http"]') : null;
+    if (!a) return;
+    e.preventDefault();
+    var w = null;
+    // No 'noopener' feature here: it makes window.open return null even on success,
+    // which is indistinguishable from a blocked popup. Sever the opener manually.
+    try { w = window.open(a.href, '_blank'); } catch (err) { w = null; }
+    if (w) { try { w.opener = null; } catch (err) { /* cross-origin — already isolated */ } }
+    else showSheet(a.href);
+  });
+})();
+</script>
 `;
 
 mkdirSync(dirname(OUT), { recursive: true });
