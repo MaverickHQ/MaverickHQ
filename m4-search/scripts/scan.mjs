@@ -81,6 +81,39 @@ function nextData(html) {
   }
 }
 
+/** Any embedded JSON state: __NEXT_DATA__, window.__NUXT__, application/json blocks. */
+function embeddedState(html) {
+  const blobs = [];
+  const nd = nextData(html);
+  if (nd) blobs.push(nd);
+  const nuxt = html.match(/window\.__NUXT__\s*=\s*(\{[\s\S]*?\});?\s*<\/script>/);
+  if (nuxt) {
+    try {
+      blobs.push(JSON.parse(nuxt[1]));
+    } catch {
+      /* often a function expression — skip */
+    }
+  }
+  const re = /<script[^>]*type=["']application\/json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let m;
+  while ((m = re.exec(html))) {
+    try {
+      blobs.push(JSON.parse(m[1].trim()));
+    } catch {
+      /* skip */
+    }
+  }
+  return blobs;
+}
+
+function diagnose(name, html) {
+  const types = [...html.matchAll(/"@type"\s*:\s*"(\w+)"/g)].map((m) => m[1]);
+  log(
+    `${name} diag: ${html.length}b, nextData=${!!nextData(html)}, nuxt=${/__NUXT__/.test(html)}, ` +
+      `jsonScripts=${(html.match(/type=["']application\/json["']/g) || []).length}, ldTypes=[${[...new Set(types)].slice(0, 6)}]`,
+  );
+}
+
 /** Deep-walk any JSON blob and collect objects that look like car listings. */
 function harvestListingObjects(node, out = [], depth = 0) {
   if (!node || depth > 14) return out;
@@ -206,10 +239,22 @@ async function srcEbay() {
 }
 
 async function srcPistonheads() {
-  const url = 'https://www.pistonheads.com/buy/bmw/f82-m4?price-to=34500';
-  const html = await get(url);
-  const nd = nextData(html);
-  const objs = nd ? harvestListingObjects(nd) : [];
+  const objs = [];
+  let html = '';
+  for (const path of [
+    '/buy/bmw/f82-m4?price-to=34500',
+    '/buy/bmw/f82-m4?price-to=34500&page=2',
+    '/buy/bmw/f82-m4?price-to=34500&page=3',
+    '/buy/cars/bmw-m4?price-to=34500',
+  ]) {
+    try {
+      html = await get(`https://www.pistonheads.com${path}`);
+      const nd = nextData(html);
+      if (nd) objs.push(...harvestListingObjects(nd));
+    } catch (e) {
+      log(`PistonHeads page ${path} failed — ${e.message}`);
+    }
+  }
   const items = [];
   for (const o of objs) {
     const link = firstString(o, [/url|link|slug|path/]);
@@ -289,7 +334,8 @@ async function srcAutotrader() {
 async function srcHeycar() {
   const url = 'https://heycar.com/uk/autos/make/bmw/model/m4?priceMax=34500';
   const html = await get(url);
-  const objs = harvestListingObjects(nextData(html));
+  const objs = embeddedState(html).flatMap((b) => harvestListingObjects(b));
+  if (!objs.length) diagnose('heycar', html);
   const items = [];
   for (const o of objs) {
     const link = firstString(o, [/url|link|slug|path/]);
@@ -325,6 +371,24 @@ async function srcMotors() {
         });
     }
   }
+  if (!items.length) {
+    for (const b of embeddedState(html)) {
+      for (const o of harvestListingObjects(b)) {
+        const link = firstString(o, [/url|link|path|slug/]);
+        if (!link) continue;
+        items.push({
+          url: link.startsWith('http') ? link : `https://www.motors.co.uk${link}`,
+          title: firstString(o, [/title|name|headline|derivative/]) || '',
+          priceText: firstString(o, [/price/]),
+          mileageText: firstString(o, [/mileage/]),
+          imageUrl: firstString(o, [/image|img|photo/]),
+          location: firstString(o, [/location|town/]),
+          description: firstString(o, [/description|subtitle/]) || '',
+        });
+      }
+    }
+  }
+  if (!items.length) diagnose('Motors.co.uk', html);
   return items.map((r) => normalise(r, 'Motors.co.uk'));
 }
 
@@ -358,9 +422,8 @@ async function srcCurated() {
             });
         }
       }
-      const nd = nextData(html);
-      if (nd)
-        for (const o of harvestListingObjects(nd)) {
+      for (const b of embeddedState(html))
+        for (const o of harvestListingObjects(b)) {
           const link = firstString(o, [/url|link|slug|path/]);
           if (!link) continue;
           found.push({
@@ -374,6 +437,7 @@ async function srcCurated() {
             description: firstString(o, [/description|subtitle/]) || '',
           });
         }
+      if (!found.length) diagnose(`curated:${entry.name}`, html);
       log(`curated:${entry.name}`, found.length, 'raw items');
       items.push(...found.map((r) => normalise(r, entry.name)));
     } catch (e) {
