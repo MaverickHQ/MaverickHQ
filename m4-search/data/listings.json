@@ -1,0 +1,67 @@
+{
+  "criteria": {
+    "yearMin": 2016,
+    "yearMax": 2018,
+    "priceMax": 32000,
+    "watchPriceMax": 34500
+  },
+  "updatedAt": "2026-08-01T10:30:28.193Z",
+  "listings": {
+    "9e7a136842f9": {
+      "id": "9e7a136842f9",
+      "url": "https://www.pistonheads.com/buy/listing/20824156",
+      "source": "PistonHeads",
+      "title": "Advert",
+      "price": 26990,
+      "year": 2016,
+      "mileage": null,
+      "isCompetition": true,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-m4-competition-edition-package-semi-auto-2dr/bmw-m4-3-0-m4-competition-edition-package-semi-auto-2dr-1471241694-1.jpg",
+      "description": "Here we have for sale this stunning, high specification and low mileage 2016 16 BMW M4 Competition 3.0 Bi-Turbo DCT 450BHP Euro 6<br/><br/>This is HPI clear, with no outstanding finance or recorded accidents! <br/><br/>Overview of vehicle deta...</p>",
+      "image": "images/9e7a136842f9.jpg",
+      "expectedPrice": 31450,
+      "score": 45,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01",
+      "priceHistory": [
+        {
+          "date": "2026-08-01",
+          "price": 26990
+        }
+      ]
+    },
+    "92dbb73a5eaa": {
+      "id": "92dbb73a5eaa",
+      "url": "https://www.theaa.com/used-cars/cardetails/94-291983",
+      "source": "AA Cars",
+      "title": "BMW M4 3.0 M4 Coupe Competition Package",
+      "price": 21495,
+      "year": null,
+      "mileage": null,
+      "isCompetition": true,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": "specialist",
+      "sellerName": "AA Cars",
+      "location": null,
+      "imageUrl": "https://thumb.vcars.co.uk/cardealer5/291983_1.jpg",
+      "description": "",
+      "image": "images/92dbb73a5eaa.jpg",
+      "expectedPrice": 32650,
+      "score": 120,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01",
+      "priceHistory": [
+        {
+          "date": "2026-08-01",
+          "price": 21495
+        }
+      ]
+    }
+  }
+}
