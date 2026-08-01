@@ -418,7 +418,7 @@ async function srcCurated() {
               imageUrl: Array.isArray(item.image) ? item.image[0] : item.image,
               description: item.description || '',
               sellerName: entry.name,
-              sellerType: 'specialist',
+              sellerType: entry.sellerType ?? null,
             });
         }
       }
@@ -433,7 +433,7 @@ async function srcCurated() {
             mileageText: firstString(o, [/mileage/]),
             imageUrl: firstString(o, [/image|img|photo/]),
             sellerName: entry.name,
-            sellerType: 'specialist',
+            sellerType: entry.sellerType ?? null,
             description: firstString(o, [/description|subtitle/]) || '',
           });
         }
@@ -459,10 +459,26 @@ async function enrich(listing) {
       html.match(new RegExp(`<meta[^>]+property=["']og:${p}["'][^>]+content=["']([^"']+)`, 'i'))?.[1] ||
       html.match(new RegExp(`<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:${p}["']`, 'i'))?.[1];
     listing.imageUrl = og('image') || listing.imageUrl;
+    const ogTitle = og('title');
+    if (ogTitle && (!listing.title || /^advert$|^listing$|^bmw$/i.test(listing.title.trim())))
+      listing.title = ogTitle.replace(/\s*[|–-]\s*(PistonHeads|AutoTrader|eBay|AA Cars).*$/i, '').slice(0, 140);
     const desc = og('description');
     if (desc && desc.length > (listing.description?.length || 0)) listing.description = desc.slice(0, 600);
+    // Structured data on the detail page is the most reliable enrichment.
+    for (const b of jsonLdBlocks(html).flat()) {
+      const v = b?.['@type'] === 'Vehicle' || b?.['@type'] === 'Car' ? b : b?.mainEntity;
+      if (!v || (v['@type'] !== 'Vehicle' && v['@type'] !== 'Car')) continue;
+      listing.year = listing.year ?? parseYear(v.vehicleModelDate || v.productionDate || v.modelDate);
+      const odo = v.mileageFromOdometer;
+      listing.mileage = listing.mileage ?? (odo && Number(odo.value ?? odo)) ?? null;
+      listing.sellerName = listing.sellerName || v?.offers?.seller?.name || null;
+      if (!listing.title || listing.title.length < 12) listing.title = v.name || listing.title;
+    }
     listing.mileage = listing.mileage ?? parseMiles(html);
-    listing.year = listing.year ?? parseYear(listing.title);
+    listing.year =
+      listing.year ??
+      parseYear(listing.title) ??
+      parseYear(html.match(/\b20\d{2}\s*\(\s*\d{2}\s*(?:reg|plate)\s*\)/i)?.[0]);
   } catch (e) {
     log(`enrich failed for ${listing.url} — ${e.message}`);
   }
