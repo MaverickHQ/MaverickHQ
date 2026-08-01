@@ -571,6 +571,12 @@ async function main() {
   for (const [id, l] of byId) {
     const prev = merged[id];
     await enrich(l);
+    // Enrichment can reveal a year the search page didn't show — re-check criteria.
+    if (!withinCriteria(l)) {
+      log(`dropped after enrich (outside criteria): ${l.title} ${l.year ?? ''} ${l.url}`);
+      delete merged[id];
+      continue;
+    }
     await mirrorImage(l);
     score(l);
     merged[id] = {

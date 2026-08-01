@@ -30,7 +30,9 @@ function img64(l) {
   return `data:image/jpeg;base64,${readFileSync(p).toString('base64')}`;
 }
 
-const live = Object.values(data.listings || {}).filter((l) => !l.stale);
+const live = Object.values(data.listings || {}).filter(
+  (l) => !l.stale && (l.year == null || (l.year >= criteria.yearMin && l.year <= criteria.yearMax)),
+);
 live.sort((a, b) => (b.score ?? -999) - (a.score ?? -999));
 const inBudget = live.filter((l) => l.price <= criteria.priceMax);
 const watch = live.filter((l) => l.price > criteria.priceMax);
