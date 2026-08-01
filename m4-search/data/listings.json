@@ -5,7 +5,7 @@
     "priceMax": 32000,
     "watchPriceMax": 34500
   },
-  "updatedAt": "2026-08-01T10:36:15.621Z",
+  "updatedAt": "2026-08-01T10:42:58.922Z",
   "listings": {
     "9e7a136842f9": {
       "id": "9e7a136842f9",
@@ -119,34 +119,6 @@
         }
       ]
     },
-    "556fc389a07c": {
-      "id": "556fc389a07c",
-      "url": "https://www.pistonheads.com/buy/listing/20787929",
-      "source": "PistonHeads",
-      "title": "Used 2019 BMW M4 for sale",
-      "price": 32975,
-      "year": 2019,
-      "mileage": 66000,
-      "isCompetition": true,
-      "redFlag": false,
-      "modFlag": false,
-      "sellerType": null,
-      "sellerName": null,
-      "location": null,
-      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-m4-competition-edition-package-semi-auto-2dr/bmw-m4-3-0-m4-competition-edition-package-semi-auto-2dr-1471033047-1.jpg",
-      "description": "In stock at MP Auto Group is this stunning Ultimate Pack BMW M4 Competition Edition finished in BMW Individual San Marino Blue with Extended Black Merino Leather Interior. This is an extremely well specced M4 with over £14,000 of optional extr...</p>",
-      "image": "images/556fc389a07c.jpg",
-      "expectedPrice": 34060,
-      "score": 11,
-      "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-01",
-      "priceHistory": [
-        {
-          "date": "2026-08-01",
-          "price": 32975
-        }
-      ]
-    },
     "e7c73d4b65d1": {
       "id": "e7c73d4b65d1",
       "url": "https://www.pistonheads.com/buy/listing/20779731",
@@ -231,34 +203,6 @@
         }
       ]
     },
-    "7dcd6d31d052": {
-      "id": "7dcd6d31d052",
-      "url": "https://www.pistonheads.com/buy/listing/20748998",
-      "source": "PistonHeads",
-      "title": "Used 2020 BMW M4 for sale",
-      "price": 34495,
-      "year": 2020,
-      "mileage": 29250,
-      "isCompetition": true,
-      "redFlag": false,
-      "modFlag": false,
-      "sellerType": null,
-      "sellerName": null,
-      "location": null,
-      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-biturbo-gpf-competition-coupe-2dr-petrol-dct-euro-6-s-s--450-ps/bmw-m4-3-0-biturbo-gpf-competition-coupe-2dr-petrol-dct-euro-6-s-s--450-ps-1465629540-1.jpg",
-      "description": "On Offer is a Great Example BMW M4 Competition Finished in Mineral White with Just 29,250 Miles and Full Service History   Specification to Include:   Head-up display\t Carbon-fibre Reversing Assist camera 20\" Diamond Cut Alloys Sun protection ...</p>",
-      "image": "images/7dcd6d31d052.jpg",
-      "expectedPrice": 38568,
-      "score": 68,
-      "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-01",
-      "priceHistory": [
-        {
-          "date": "2026-08-01",
-          "price": 34495
-        }
-      ]
-    },
     "51aefa61abf7": {
       "id": "51aefa61abf7",
       "url": "https://www.pistonheads.com/buy/listing/19462509",
@@ -312,34 +256,6 @@
         {
           "date": "2026-08-01",
           "price": 30495
-        }
-      ]
-    },
-    "2d62c8145ee8": {
-      "id": "2d62c8145ee8",
-      "url": "https://www.pistonheads.com/buy/listing/20736586",
-      "source": "PistonHeads",
-      "title": "Used 2019 BMW M4 for sale",
-      "price": 31995,
-      "year": 2019,
-      "mileage": null,
-      "isCompetition": true,
-      "redFlag": false,
-      "modFlag": false,
-      "sellerType": null,
-      "sellerName": null,
-      "location": null,
-      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-biturbo-gpf-competition-coupe-2dr-petrol-dct-euro-6-s-s--450-ps/bmw-m4-3-0-biturbo-gpf-competition-coupe-2dr-petrol-dct-euro-6-s-s--450-ps-1468527601-1.jpg",
-      "description": "FULL BMW HISTORY | EXTERIOR CARBON | ADAPTIVE LEDS | HUD | CAMERA   Here at Cult Automotive, we're please to present this fantastic Yas Marina Blue M4 Competition, a car we have previously sold and are delighted to offer once more.   Enthusias...</p>",
-      "image": "images/2d62c8145ee8.jpg",
-      "expectedPrice": 35050,
-      "score": 12,
-      "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-01",
-      "priceHistory": [
-        {
-          "date": "2026-08-01",
-          "price": 31995
         }
       ]
     },
