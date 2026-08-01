@@ -525,6 +525,8 @@ function score(l) {
   if (l.sellerType === 'specialist') s += 8;
   if (l.modFlag) s -= 30;
   if ((l.mileage ?? 60000) < 45000) s += 6;
+  if (l.mileage == null) s -= 25; // unverified mileage: don't let a cheap ad outrank known-good cars
+  if (l.year == null) s -= 10;
   l.expectedPrice = Math.round(expected);
   l.score = Math.round(s);
   return l;

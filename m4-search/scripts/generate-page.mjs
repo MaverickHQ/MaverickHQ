@@ -74,7 +74,8 @@ function daysOn(l) {
 
 function card(l, rank) {
   const src = img64(l);
-  const value = l.expectedPrice ? l.price - l.expectedPrice : null;
+  // Only claim a value delta when the model had real inputs to work with.
+  const value = l.expectedPrice && l.year && l.mileage ? l.price - l.expectedPrice : null;
   const chips = specChips(l);
   const lastDrop = (() => {
     const h = l.priceHistory || [];
@@ -87,7 +88,7 @@ function card(l, rank) {
   return `
   <article class="card${rank === 0 ? ' top' : ''}">
     <div class="photo">
-      ${src ? `<img src="${src}" alt="${esc(l.title)}" loading="lazy">` : `<div class="no-photo"><span>M4</span>photo on listing</div>`}
+      ${src ? `<img src="${src}" alt="${esc(l.title)}">` : `<div class="no-photo"><span>M4</span>photo on listing</div>`}
       ${rank === 0 ? '<span class="flag">Top pick</span>' : ''}
       ${l.firstSeen === today ? '<span class="flag new">New today</span>' : ''}
     </div>
