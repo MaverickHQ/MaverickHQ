@@ -5,7 +5,7 @@
     "priceMax": 32000,
     "watchPriceMax": 34500
   },
-  "updatedAt": "2026-08-01T10:30:28.193Z",
+  "updatedAt": "2026-08-01T10:33:39.772Z",
   "listings": {
     "9e7a136842f9": {
       "id": "9e7a136842f9",
@@ -60,6 +60,342 @@
         {
           "date": "2026-08-01",
           "price": 21495
+        }
+      ]
+    },
+    "757e3769c7e2": {
+      "id": "757e3769c7e2",
+      "url": "https://www.pistonheads.com/buy/listing/20665908",
+      "source": "PistonHeads",
+      "title": "Advert",
+      "price": 26999,
+      "year": 2018,
+      "mileage": 70846,
+      "isCompetition": true,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-m4-coupe-competition-package/bmw-m4-3-0-m4-coupe-competition-package-1459112095-1.jpg",
+      "description": "2018 18 BMW M4 Competition, This Black example has covered 70,846 miles, this great looking examples features styling enhancements and holds a record of the crucial crank hub upgrade being completed, Featuring, -Car Play, -Rear View Camera, -P...</p>",
+      "image": "images/757e3769c7e2.jpg",
+      "expectedPrice": 32424,
+      "score": 54,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01",
+      "priceHistory": [
+        {
+          "date": "2026-08-01",
+          "price": 26999
+        }
+      ]
+    },
+    "22217f540a7a": {
+      "id": "22217f540a7a",
+      "url": "https://www.pistonheads.com/buy/listing/20806832",
+      "source": "PistonHeads",
+      "title": "Advert",
+      "price": 33500,
+      "year": null,
+      "mileage": 29500,
+      "isCompetition": true,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-m4-coupe-competition-package/bmw-m4-3-0-m4-coupe-competition-package-1469865479-1.jpg",
+      "description": "For sale BMW M4 with the Competition Pack in Alpine White. 444bhp. Very Low miles with full BMW history  and  a great spec with around GBP 5000 of options.   Upgrades include - ??Carbon Front Splitter, Splitter Covers  and  Rear Spoiler.  Fact...</p>",
+      "image": "images/22217f540a7a.jpg",
+      "expectedPrice": 34945,
+      "score": 20,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01",
+      "priceHistory": [
+        {
+          "date": "2026-08-01",
+          "price": 33500
+        }
+      ]
+    },
+    "556fc389a07c": {
+      "id": "556fc389a07c",
+      "url": "https://www.pistonheads.com/buy/listing/20787929",
+      "source": "PistonHeads",
+      "title": "Advert",
+      "price": 32975,
+      "year": null,
+      "mileage": 66000,
+      "isCompetition": true,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-m4-competition-edition-package-semi-auto-2dr/bmw-m4-3-0-m4-competition-edition-package-semi-auto-2dr-1471033047-1.jpg",
+      "description": "In stock at MP Auto Group is this stunning Ultimate Pack BMW M4 Competition Edition finished in BMW Individual San Marino Blue with Extended Black Merino Leather Interior. This is an extremely well specced M4 with over £14,000 of optional extr...</p>",
+      "image": "images/556fc389a07c.jpg",
+      "expectedPrice": 31660,
+      "score": -13,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01",
+      "priceHistory": [
+        {
+          "date": "2026-08-01",
+          "price": 32975
+        }
+      ]
+    },
+    "e7c73d4b65d1": {
+      "id": "e7c73d4b65d1",
+      "url": "https://www.pistonheads.com/buy/listing/20779731",
+      "source": "PistonHeads",
+      "title": "Advert",
+      "price": 26695,
+      "year": null,
+      "mileage": null,
+      "isCompetition": true,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-biturbo-competition-dct-euro-6-s-s-2dr/bmw-m4-3-0-biturbo-competition-dct-euro-6-s-s-2dr-1467944426-1.jpg",
+      "description": "RARE SAKHIR ORANGE  HUGE SPEC  CRANK HUB DONE  BMW M4 COMPETITION If youre looking for an M4 that genuinely stands out from the crowd, this BMW M4 3.0 BiTurbo Competition DCT is the one. Finished in stunning and rare Sakhir Orange with Extende...</p>",
+      "image": "images/e7c73d4b65d1.jpg",
+      "expectedPrice": 32650,
+      "score": 60,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01",
+      "priceHistory": [
+        {
+          "date": "2026-08-01",
+          "price": 26695
+        }
+      ]
+    },
+    "abdbef759aae": {
+      "id": "abdbef759aae",
+      "url": "https://www.pistonheads.com/buy/listing/20630904",
+      "source": "PistonHeads",
+      "title": "Advert",
+      "price": 27990,
+      "year": 2017,
+      "mileage": 58579,
+      "isCompetition": true,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-biturbo-competition-coupe-2dr-petrol-dct-euro-6-s-s--450-ps/bmw-m4-3-0-biturbo-competition-coupe-2dr-petrol-dct-euro-6-s-s--450-ps-1468008403-1.jpg",
+      "description": "Huge specification. Carbon Splitter  and HUD lots more. No expense spared on this one. Introducing the stunning 2017 BMW M4 3.0 BiTurbo Competition Coupe, a remarkable blend of performance and elegance, now available with 58,579 miles on the c...</p>",
+      "image": "images/abdbef759aae.jpg",
+      "expectedPrice": 32328,
+      "score": 46,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01",
+      "priceHistory": [
+        {
+          "date": "2026-08-01",
+          "price": 27990
+        }
+      ]
+    },
+    "c355613656fd": {
+      "id": "c355613656fd",
+      "url": "https://www.pistonheads.com/buy/listing/20765274",
+      "source": "PistonHeads",
+      "title": "Advert",
+      "price": 27501,
+      "year": 2018,
+      "mileage": 66620,
+      "isCompetition": true,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-m4-competition-edition-package-semi-auto-2dr/bmw-m4-3-0-m4-competition-edition-package-semi-auto-2dr-1466531734-1.jpg",
+      "description": "2018 (18) BMW M4 Competition Edition Package finished in stunning Silverstone Metallic with 66,620 miles from new. Powered by the incredible 3.0L twin-turbo petrol engine paired with the seamless semi-automatic transmission, this M4 delivers e...</p>",
+      "image": "images/c355613656fd.jpg",
+      "expectedPrice": 32804,
+      "score": 53,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01",
+      "priceHistory": [
+        {
+          "date": "2026-08-01",
+          "price": 27501
+        }
+      ]
+    },
+    "7dcd6d31d052": {
+      "id": "7dcd6d31d052",
+      "url": "https://www.pistonheads.com/buy/listing/20748998",
+      "source": "PistonHeads",
+      "title": "Advert",
+      "price": 34495,
+      "year": null,
+      "mileage": 29250,
+      "isCompetition": true,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-biturbo-gpf-competition-coupe-2dr-petrol-dct-euro-6-s-s--450-ps/bmw-m4-3-0-biturbo-gpf-competition-coupe-2dr-petrol-dct-euro-6-s-s--450-ps-1465629540-1.jpg",
+      "description": "On Offer is a Great Example BMW M4 Competition Finished in Mineral White with Just 29,250 Miles and Full Service History   Specification to Include:   Head-up display\t Carbon-fibre Reversing Assist camera 20\" Diamond Cut Alloys Sun protection ...</p>",
+      "image": "images/7dcd6d31d052.jpg",
+      "expectedPrice": 34968,
+      "score": 32,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01",
+      "priceHistory": [
+        {
+          "date": "2026-08-01",
+          "price": 34495
+        }
+      ]
+    },
+    "51aefa61abf7": {
+      "id": "51aefa61abf7",
+      "url": "https://www.pistonheads.com/buy/listing/19462509",
+      "source": "PistonHeads",
+      "title": "Advert",
+      "price": 23795,
+      "year": null,
+      "mileage": null,
+      "isCompetition": true,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/4-series/3-0-m4-coupe-competition-package/bmw-4-series-3-0-m4-coupe-competition-package-1448316388-1.jpg",
+      "description": "Check out this BMW M4 3.0 M4 Coupe Competition Package for sale on PistonHeads. Get in touch for more information or to take a test drive today!",
+      "image": "images/51aefa61abf7.jpg",
+      "expectedPrice": 32650,
+      "score": 89,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01",
+      "priceHistory": [
+        {
+          "date": "2026-08-01",
+          "price": 23795
+        }
+      ]
+    },
+    "e0b9b13e4aa3": {
+      "id": "e0b9b13e4aa3",
+      "url": "https://www.pistonheads.com/buy/listing/20741721",
+      "source": "PistonHeads",
+      "title": "Advert",
+      "price": 30495,
+      "year": null,
+      "mileage": 30881,
+      "isCompetition": true,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-m4-competition-edition-package-semi-auto-2dr/bmw-m4-3-0-m4-competition-edition-package-semi-auto-2dr-1465439852-1.jpg",
+      "description": "Introducing the stunning BMW M4 in Alpine White, boasting a powerful 3.0 M4 Competition Edition Package Semi-Auto engine with only 30881 miles on the clock. This beauty comes loaded with extras to enhance your driving experience.<br/><br/>Step...</p>",
+      "image": "images/e0b9b13e4aa3.jpg",
+      "expectedPrice": 34821,
+      "score": 49,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01",
+      "priceHistory": [
+        {
+          "date": "2026-08-01",
+          "price": 30495
+        }
+      ]
+    },
+    "2d62c8145ee8": {
+      "id": "2d62c8145ee8",
+      "url": "https://www.pistonheads.com/buy/listing/20736586",
+      "source": "PistonHeads",
+      "title": "Advert",
+      "price": 31995,
+      "year": null,
+      "mileage": null,
+      "isCompetition": true,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-biturbo-gpf-competition-coupe-2dr-petrol-dct-euro-6-s-s--450-ps/bmw-m4-3-0-biturbo-gpf-competition-coupe-2dr-petrol-dct-euro-6-s-s--450-ps-1468527601-1.jpg",
+      "description": "FULL BMW HISTORY | EXTERIOR CARBON | ADAPTIVE LEDS | HUD | CAMERA   Here at Cult Automotive, we're please to present this fantastic Yas Marina Blue M4 Competition, a car we have previously sold and are delighted to offer once more.   Enthusias...</p>",
+      "image": "images/2d62c8145ee8.jpg",
+      "expectedPrice": 32650,
+      "score": 13,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01",
+      "priceHistory": [
+        {
+          "date": "2026-08-01",
+          "price": 31995
+        }
+      ]
+    },
+    "edb296126d17": {
+      "id": "edb296126d17",
+      "url": "https://www.pistonheads.com/buy/listing/20579969",
+      "source": "PistonHeads",
+      "title": "Advert",
+      "price": 22340,
+      "year": 2017,
+      "mileage": null,
+      "isCompetition": true,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-biturbo-competition-dct-euro-6-s-s-2dr/bmw-m4-3-0-biturbo-competition-dct-euro-6-s-s-2dr-1462761589-1.jpg",
+      "description": "This 2017 BMW M4 BiTurbo Competition is a standout example, boasting a Euro 6 compliant 3.0L petrol engine. This model, in Competition trim, offers a compelling blend of performance and technology. It comes equipped with Apple CarPlay Preparat...</p>",
+      "image": "images/edb296126d17.jpg",
+      "expectedPrice": 32650,
+      "score": 103,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01",
+      "priceHistory": [
+        {
+          "date": "2026-08-01",
+          "price": 22340
+        }
+      ]
+    },
+    "fa3340fe6f2f": {
+      "id": "fa3340fe6f2f",
+      "url": "https://www.pistonheads.com/buy/listing/20729322",
+      "source": "PistonHeads",
+      "title": "Advert",
+      "price": 28990,
+      "year": 2017,
+      "mileage": null,
+      "isCompetition": true,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-biturbo-competition-dct-euro-6-s-s-2dr/bmw-m4-3-0-biturbo-competition-dct-euro-6-s-s-2dr-1463873482-1.jpg",
+      "description": "This 2017 BMW M4 BiTurbo Competition comes with the peace of mind of a 6 month warranty and a fresh 12 month MOT provided upon purchase. This high performance vehicle features a 3.0 litre petrol engine that meets Euro 6 emission standards, ens...</p>",
+      "image": "images/fa3340fe6f2f.jpg",
+      "expectedPrice": 32650,
+      "score": 37,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01",
+      "priceHistory": [
+        {
+          "date": "2026-08-01",
+          "price": 28990
         }
       ]
     }
