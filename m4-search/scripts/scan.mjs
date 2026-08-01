@@ -571,7 +571,12 @@ async function main() {
   for (const [id, l] of byId) {
     const prev = merged[id];
     await enrich(l);
-    // Enrichment can reveal a year the search page didn't show — re-check criteria.
+    // Enrichment can reveal a year or body style the search page didn't show — re-check.
+    if (/convertible|cabriolet/i.test(`${l.title} ${l.description}`)) {
+      log(`dropped after enrich (convertible): ${l.url}`);
+      delete merged[id];
+      continue;
+    }
     if (!withinCriteria(l)) {
       log(`dropped after enrich (outside criteria): ${l.title} ${l.year ?? ''} ${l.url}`);
       delete merged[id];

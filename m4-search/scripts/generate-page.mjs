@@ -2,9 +2,12 @@
 /**
  * Generate the M4 Competition Watch page from m4-search/data/listings.json.
  *
- * Output (m4-search/site/index.html) is fully self-contained: listing photos are
- * embedded as base64 data URIs because the page is published as a Claude
- * artifact, whose CSP blocks all external requests (including images).
+ * Output (m4-search/site/index.html) is fully self-contained: listing photos and
+ * the display typeface are embedded as base64 data URIs because the page is
+ * published as a Claude artifact, whose CSP blocks all external requests.
+ *
+ * Design: "race-entry ledger" — a numbered, hairline-ruled datasheet. No cards,
+ * no shadows; hierarchy is carried by type scale (Archivo Black) and rules.
  */
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
@@ -14,6 +17,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = join(ROOT, 'data');
 const OUT = join(ROOT, 'site', 'index.html');
+const FONT = join(ROOT, 'assets', 'archivo-black-latin-400-normal.woff2');
 
 const data = JSON.parse(readFileSync(join(DATA, 'listings.json'), 'utf8'));
 const { criteria } = data;
@@ -21,7 +25,11 @@ const { criteria } = data;
 const esc = (s) =>
   String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const gbp = (n) => (n == null ? '—' : '£' + Number(n).toLocaleString('en-GB'));
-const miles = (n) => (n == null ? 'mileage n/a' : Number(n).toLocaleString('en-GB') + ' mi');
+const kmi = (n) => (n == null ? 'MILES TBC' : Number(n).toLocaleString('en-GB') + ' MI');
+
+const fontData = existsSync(FONT)
+  ? `@font-face{font-family:'Archivo Black';font-style:normal;font-weight:400;font-display:swap;src:url(data:font/woff2;base64,${readFileSync(FONT).toString('base64')}) format('woff2');}`
+  : '';
 
 function img64(l) {
   if (!l.image) return null;
@@ -44,176 +52,272 @@ const drops = live.filter((l) => {
   return h.length >= 2 && h[h.length - 1].price < h[h.length - 2].price;
 });
 
-const updated = new Date(data.updatedAt).toLocaleString('en-GB', {
-  timeZone: 'Europe/London',
-  weekday: 'short',
-  day: 'numeric',
-  month: 'short',
-  hour: '2-digit',
-  minute: '2-digit',
-});
+const updated = new Date(data.updatedAt)
+  .toLocaleString('en-GB', {
+    timeZone: 'Europe/London',
+    day: '2-digit',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+  .toUpperCase();
 
-function specChips(l) {
+function specBits(l) {
   const text = `${l.title} ${l.description}`.toLowerCase();
-  const chips = [];
-  if (/full (bmw |main dealer |)service history|fbmwsh|fsh/.test(text)) chips.push(['FSH', 'good']);
-  if (/one owner|1 owner/.test(text)) chips.push(['1 owner', 'good']);
-  else if (/two owners|2 owners/.test(text)) chips.push(['2 owners', 'good']);
-  if (/harman|hk audio/.test(text)) chips.push(['Harman Kardon', '']);
-  if (/head[- ]up|hud/.test(text)) chips.push(['HUD', '']);
-  if (/adaptive/.test(text)) chips.push(['Adaptive susp.', '']);
-  if (/carbon (interior|trim|pack)/.test(text)) chips.push(['Carbon trim', '']);
-  if (/sunroof/.test(text)) chips.push(['Sunroof', '']);
-  if (/manual/.test(text) && !/manual.*dct|dct.*manual/.test(text)) chips.push(['Manual', '']);
-  if (l.modFlag) chips.push(['Modified — verify', 'warn']);
-  return chips;
+  const bits = [];
+  if (/full (bmw |main dealer |)service history|fbmwsh|fsh/.test(text)) bits.push('FSH');
+  if (/one owner|1 owner/.test(text)) bits.push('1 OWNER');
+  else if (/two owners|2 owners/.test(text)) bits.push('2 OWNERS');
+  if (/harman|hk audio/.test(text)) bits.push('HARMAN KARDON');
+  if (/head[- ]up|hud/.test(text)) bits.push('HUD');
+  if (/adaptive/.test(text)) bits.push('ADAPTIVE SUSP');
+  if (/carbon (interior|trim|pack)/.test(text)) bits.push('CARBON TRIM');
+  if (/crank hub done|crank hub fix/.test(text)) bits.push('CRANK HUB DONE');
+  if (/sunroof/.test(text)) bits.push('SUNROOF');
+  return bits;
 }
 
 function daysOn(l) {
   const d = Math.round((new Date(today) - new Date(l.firstSeen)) / 86400000);
-  return d <= 0 ? 'New today' : `${d}d listed`;
+  return d <= 0 ? 'LISTED TODAY' : `${d}D LISTED`;
 }
 
-function card(l, rank) {
+function entry(l, idx, { top = false } = {}) {
   const src = img64(l);
-  // Only claim a value delta when the model had real inputs to work with.
   const value = l.expectedPrice && l.year && l.mileage ? l.price - l.expectedPrice : null;
-  const chips = specChips(l);
+  const bits = specBits(l);
   const lastDrop = (() => {
     const h = l.priceHistory || [];
-    if (h.length >= 2) {
-      const d = h[h.length - 1].price - h[h.length - 2].price;
-      if (d < 0) return d;
-    }
+    if (h.length >= 2 && h[h.length - 1].price < h[h.length - 2].price)
+      return h[h.length - 2].price - h[h.length - 1].price;
     return null;
   })();
+  const meta = [
+    l.year ?? '2016–18',
+    kmi(l.mileage),
+    l.sellerName || l.source,
+    l.location ? esc(l.location) : null,
+    daysOn(l),
+  ]
+    .filter(Boolean)
+    .join('&ensp;·&ensp;');
+
   return `
-  <article class="card${rank === 0 ? ' top' : ''}">
-    <div class="photo">
-      ${src ? `<img src="${src}" alt="${esc(l.title)}">` : `<div class="no-photo"><span>M4</span>photo on listing</div>`}
-      ${rank === 0 ? '<span class="flag">Top pick</span>' : ''}
-      ${l.firstSeen === today ? '<span class="flag new">New today</span>' : ''}
+  <li class="entry${top ? ' is-top' : ''}">
+    <span class="no" aria-hidden="true">${String(idx).padStart(2, '0')}</span>
+    <a class="shot" href="${esc(l.url)}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+      ${src ? `<img src="${src}" alt="">` : `<span class="noimg">PHOTO ON LISTING</span>`}
+    </a>
+    <div class="info">
+      ${top ? `<span class="toptag">Top pick</span>` : ''}
+      ${l.modFlag ? `<span class="modtag">Modified — verify</span>` : ''}
+      <h3>${esc(l.title || 'BMW M4 Competition')}</h3>
+      <p class="meta">${meta}</p>
+      ${bits.length ? `<p class="bits">${bits.join('&ensp;/&ensp;')}</p>` : ''}
+      ${l.description ? `<p class="desc">${esc(l.description.slice(0, 190))}${l.description.length > 190 ? '…' : ''}</p>` : ''}
     </div>
-    <div class="body">
-      <div class="titlerow">
-        <h3>${esc(l.title || 'BMW M4 Competition')}</h3>
-        <div class="price">${gbp(l.price)}${lastDrop ? `<span class="drop">▼ ${gbp(-lastDrop).slice(1)} drop</span>` : ''}</div>
-      </div>
-      <div class="meta">
-        <span>${l.year ?? '2016–18'}</span><span>${miles(l.mileage)}</span>
-        ${l.location ? `<span>${esc(l.location)}</span>` : ''}
-        <span>${daysOn(l)}</span>
-      </div>
-      ${chips.length ? `<div class="chips">${chips.map(([t, k]) => `<span class="chip ${k}">${esc(t)}</span>`).join('')}</div>` : ''}
-      ${l.description ? `<p class="desc">${esc(l.description.slice(0, 220))}${l.description.length > 220 ? '…' : ''}</p>` : ''}
-      <div class="foot">
-        <span class="seller">${l.sellerType === 'specialist' ? '<span class="chip spec">Specialist</span> ' : ''}${esc(l.sellerName || l.source)}</span>
-        ${value != null ? `<span class="value ${value <= 0 ? 'under' : 'over'}">${value <= 0 ? gbp(-value).slice(0) + ' under model' : gbp(value) + ' over model'}</span>` : ''}
-        <a class="go" href="${esc(l.url)}" target="_blank" rel="noopener">View listing ↗</a>
-      </div>
+    <div class="deal">
+      <span class="price">${gbp(l.price)}</span>
+      ${lastDrop ? `<span class="delta drop">▼ ${gbp(lastDrop)} PRICE DROP</span>` : ''}
+      ${value != null && value < 0 ? `<span class="delta under">${gbp(-value)} UNDER MODEL</span>` : ''}
+      ${value != null && value >= 0 ? `<span class="delta">MODEL ${gbp(l.expectedPrice)}</span>` : ''}
+      <a class="view" href="${esc(l.url)}" target="_blank" rel="noopener">View listing<span aria-hidden="true"> ↗</span></a>
     </div>
-  </article>`;
+  </li>`;
 }
 
 const html = `<title>M4 Competition Watch</title>
 <style>
-  :root { color-scheme: light;
-    --paper:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
-    --grid:#e1e0d9; --border:rgba(11,11,11,.10); --accent:#2a78d6; --wash:rgba(42,120,214,.07);
-    --good:#006300; --warn:#b06000; --crit:#d03b3b; }
-  @media (prefers-color-scheme: dark) { :root:where(:not([data-theme="light"])) {
+  ${fontData}
+  :root {
+    color-scheme: light;
+    --paper: #f4f4f2;
+    --ink: #0d0d0e;
+    --ink2: #55555a;
+    --mute: #8e8e90;
+    --line: #d8d8d4;
+    --line-strong: #0d0d0e;
+    --accent: #1e5bd6;
+    --good: #006300;
+    --wash: rgba(13, 13, 14, 0.03);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --paper: #0e0e10;
+      --ink: #f4f4f2;
+      --ink2: #b4b4b6;
+      --mute: #77777a;
+      --line: #26262a;
+      --line-strong: #f4f4f2;
+      --accent: #4a8df0;
+      --good: #34b234;
+      --wash: rgba(244, 244, 242, 0.04);
+    }
+  }
+  :root[data-theme="dark"] {
     color-scheme: dark;
-    --paper:#0d0d0d; --surface:#1a1a19; --ink:#fff; --ink2:#c3c2b7; --muted:#898781;
-    --grid:#2c2c2a; --border:rgba(255,255,255,.10); --accent:#3987e5; --wash:rgba(57,135,229,.10);
-    --good:#0ca30c; --warn:#e0a030; --crit:#e66767; } }
-  :root[data-theme="dark"] { color-scheme: dark;
-    --paper:#0d0d0d; --surface:#1a1a19; --ink:#fff; --ink2:#c3c2b7; --muted:#898781;
-    --grid:#2c2c2a; --border:rgba(255,255,255,.10); --accent:#3987e5; --wash:rgba(57,135,229,.10);
-    --good:#0ca30c; --warn:#e0a030; --crit:#e66767; }
-  :root[data-theme="light"] { color-scheme: light;
-    --paper:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
-    --grid:#e1e0d9; --border:rgba(11,11,11,.10); --accent:#2a78d6; --wash:rgba(42,120,214,.07);
-    --good:#006300; --warn:#b06000; --crit:#d03b3b; }
+    --paper: #0e0e10; --ink: #f4f4f2; --ink2: #b4b4b6; --mute: #77777a;
+    --line: #26262a; --line-strong: #f4f4f2; --accent: #4a8df0; --good: #34b234;
+    --wash: rgba(244, 244, 242, 0.04);
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --paper: #f4f4f2; --ink: #0d0d0e; --ink2: #55555a; --mute: #8e8e90;
+    --line: #d8d8d4; --line-strong: #0d0d0e; --accent: #1e5bd6; --good: #006300;
+    --wash: rgba(13, 13, 14, 0.03);
+  }
 
-  body { background:var(--paper); color:var(--ink);
-    font-family: system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.5; }
-  .wrap { max-width:1080px; margin:0 auto; padding:40px 22px 72px; display:flex; flex-direction:column; gap:28px; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5;
+  }
+  .display { font-family: 'Archivo Black', system-ui, sans-serif; font-weight: 400; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 44px 28px 90px; }
+  .micro {
+    font-size: 11px; font-weight: 650; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink2);
+  }
 
-  .stripe { display:flex; height:4px; width:110px; border-radius:2px; overflow:hidden; }
-  .stripe span { flex:1; } .s1{background:#4c9fdc} .s2{background:#23439b} .s3{background:#d0273a}
-  header { display:flex; flex-direction:column; gap:10px; }
-  .eyebrow { font-size:12px; font-weight:600; letter-spacing:.13em; text-transform:uppercase; color:var(--ink2); }
-  h1 { margin:0; font-size:clamp(26px,4.5vw,38px); font-weight:800; letter-spacing:-.02em; line-height:1.1; }
-  .sub { color:var(--ink2); font-size:14.5px; max-width:70ch; margin:0; }
-  .stamp { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--ink2);
-    background:var(--wash); border:1px solid var(--border); border-radius:99px; padding:5px 14px; align-self:flex-start; }
-  .stamp b { color:var(--ink); font-weight:700; }
-  .dot { width:7px; height:7px; border-radius:50%; background:var(--accent); }
+  /* ---------- masthead ---------- */
+  .tri { display: inline-flex; height: 10px; width: 42px; margin-bottom: 18px; }
+  .tri span { flex: 1; }
+  .tri .a { background: #4c9fdc; } .tri .b { background: #23439b; } .tri .c { background: #d0273a; }
+  .mast { border-bottom: 3px solid var(--line-strong); padding-bottom: 26px; }
+  .mast .row { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+  h1 {
+    font-family: 'Archivo Black', system-ui, sans-serif; font-weight: 400;
+    font-size: clamp(44px, 9vw, 108px);
+    line-height: 0.94; letter-spacing: -0.015em; text-transform: uppercase;
+    margin: 0 0 18px; text-wrap: balance;
+  }
+  h1 .thin { color: var(--accent); }
+  .specline { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+  .specline .micro b { color: var(--ink); font-weight: 750; }
+  .stamp { text-align: right; }
+  .stamp .micro b { color: var(--ink); }
+  .live { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--good); margin-right: 7px; }
 
-  .tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
-  .tile { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:13px 16px; }
-  .tile .n { font-size:24px; font-weight:800; }
-  .tile .l { font-size:11.5px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); }
+  /* ---------- stat strip ---------- */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
+  .stats > div { padding: 22px 4px 20px; border-left: 1px solid var(--line); padding-left: 18px; }
+  .stats > div:first-child { border-left: none; padding-left: 0; }
+  .stats .n { font-family: 'Archivo Black', system-ui, sans-serif; font-size: clamp(28px, 4vw, 44px); line-height: 1; }
+  .stats .n.accent { color: var(--accent); }
+  .stats .micro { margin-top: 6px; display: block; color: var(--mute); }
+  @media (max-width: 640px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+    .stats > div:nth-child(3) { border-left: none; padding-left: 0; }
+    .stats > div:nth-child(1), .stats > div:nth-child(2) { border-bottom: 1px solid var(--line); }
+  }
 
-  h2 { margin:6px 0 0; font-size:19px; font-weight:750; letter-spacing:-.01em; }
-  .sec-note { color:var(--ink2); font-size:13.5px; margin:0; }
+  /* ---------- section heads ---------- */
+  .sechead { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin: 54px 0 0; padding-bottom: 12px; border-bottom: 3px solid var(--line-strong); }
+  .sechead h2 {
+    font-family: 'Archivo Black', system-ui, sans-serif; font-weight: 400; margin: 0;
+    font-size: clamp(19px, 2.6vw, 26px); text-transform: uppercase; letter-spacing: 0.01em;
+  }
+  .sechead .micro { color: var(--mute); }
 
-  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; }
-  .card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden;
-    display:flex; flex-direction:column; }
-  .card.top { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
-  .photo { position:relative; aspect-ratio:16/10; background:var(--grid); }
-  .photo img { width:100%; height:100%; object-fit:cover; display:block; }
-  .no-photo { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:4px; color:var(--muted); font-size:12.5px; }
-  .no-photo span { font-size:34px; font-weight:800; letter-spacing:-.02em; opacity:.35; }
-  .flag { position:absolute; top:10px; left:10px; background:var(--accent); color:#fff; font-size:11px;
-    font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:3px 10px; border-radius:99px; }
-  .flag.new { left:auto; right:10px; background:var(--ink); color:var(--paper); }
-  .body { padding:14px 16px 16px; display:flex; flex-direction:column; gap:9px; flex:1; }
-  .titlerow h3 { margin:0 0 2px; font-size:15px; font-weight:700; line-height:1.3; }
-  .price { font-size:21px; font-weight:800; letter-spacing:-.01em; display:flex; align-items:baseline; gap:10px; }
-  .drop { font-size:12px; font-weight:700; color:var(--good); }
-  .meta { display:flex; flex-wrap:wrap; gap:4px 14px; font-size:12.5px; color:var(--ink2); font-variant-numeric:tabular-nums; }
-  .chips { display:flex; flex-wrap:wrap; gap:5px; }
-  .chip { font-size:11px; font-weight:700; padding:2px 9px; border-radius:99px; border:1px solid var(--border); color:var(--ink2); }
-  .chip.good { color:var(--good); background:color-mix(in srgb,var(--good) 9%,transparent); border-color:transparent; }
-  .chip.warn { color:var(--warn); background:color-mix(in srgb,var(--warn) 10%,transparent); border-color:transparent; }
-  .chip.spec { color:var(--accent); background:var(--wash); border-color:transparent; }
-  .desc { margin:0; font-size:12.5px; color:var(--ink2); }
-  .foot { margin-top:auto; padding-top:10px; border-top:1px solid var(--grid); display:flex; align-items:center;
-    gap:10px; flex-wrap:wrap; font-size:12.5px; }
-  .seller { color:var(--ink2); font-weight:600; display:flex; align-items:center; gap:4px; }
-  .value.under { color:var(--good); font-weight:700; } .value.over { color:var(--muted); }
-  .go { margin-left:auto; color:var(--accent); font-weight:700; text-decoration:none; }
-  .go:hover { text-decoration:underline; }
-  .go:focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:3px; }
+  /* ---------- ledger ---------- */
+  ol.ledger { list-style: none; margin: 0; padding: 0; }
+  .entry {
+    display: grid;
+    grid-template-columns: 68px 340px 1fr 210px;
+    gap: 26px;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  @media (hover: hover) { .entry { transition: background 0.15s ease; } .entry:hover { background: var(--wash); } }
+  .no {
+    font-family: 'Archivo Black', system-ui, sans-serif;
+    font-size: 30px; line-height: 1; padding-top: 4px;
+    color: transparent; -webkit-text-stroke: 1.2px var(--mute);
+    font-variant-numeric: tabular-nums;
+  }
+  .is-top .no { color: var(--accent); -webkit-text-stroke: 0; }
+  .shot { display: block; aspect-ratio: 3 / 2; overflow: hidden; background: var(--line); }
+  .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .shot img { transition: transform 0.45s cubic-bezier(0.2, 0.6, 0.2, 1); }
+    .entry:hover .shot img { transform: scale(1.035); }
+  }
+  .noimg { display: flex; align-items: center; justify-content: center; height: 100%;
+    font-size: 11px; letter-spacing: 0.16em; color: var(--mute); }
+  .info { min-width: 0; }
+  .toptag, .modtag {
+    display: inline-block; font-size: 11px; font-weight: 750; letter-spacing: 0.16em;
+    text-transform: uppercase; padding: 3px 8px; margin: 0 8px 10px 0;
+  }
+  .toptag { background: var(--accent); color: var(--paper); }
+  .modtag { border: 1px solid var(--line); color: var(--ink2); }
+  .info h3 { margin: 0 0 8px; font-size: 17px; font-weight: 700; letter-spacing: -0.005em; line-height: 1.3; }
+  .meta { margin: 0 0 10px; font-size: 12.5px; color: var(--ink2); font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em; }
+  .bits { margin: 0 0 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); }
+  .desc { margin: 0; font-size: 13px; color: var(--ink2); max-width: 52ch;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .deal { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 7px; }
+  .price { font-family: 'Archivo Black', system-ui, sans-serif; font-size: clamp(24px, 3vw, 34px); line-height: 1; }
+  .delta { font-size: 11px; font-weight: 750; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); }
+  .delta.under { color: var(--good); }
+  .delta.drop { color: var(--good); }
+  .view {
+    margin-top: 6px; font-size: 12px; font-weight: 750; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink); text-decoration: none; border-bottom: 2px solid var(--accent); padding-bottom: 3px;
+  }
+  .view:hover { color: var(--accent); }
+  .view:focus-visible, .shot:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-  .empty { background:var(--surface); border:1px dashed var(--baseline,var(--grid)); border-radius:14px;
-    padding:36px; text-align:center; color:var(--ink2); font-size:14px; }
-  footer { font-size:12px; color:var(--muted); border-top:1px solid var(--grid); padding-top:16px; max-width:80ch; }
+  @media (max-width: 940px) {
+    .entry { grid-template-columns: 44px 260px 1fr; }
+    .no { font-size: 22px; }
+    .deal { grid-column: 2 / -1; flex-direction: row; align-items: baseline; gap: 16px; text-align: left; flex-wrap: wrap; }
+  }
+  @media (max-width: 640px) {
+    .entry { grid-template-columns: 1fr; gap: 14px; padding: 22px 0; }
+    .no { display: none; }
+    .deal { grid-column: 1; }
+  }
+
+  .empty { padding: 44px 0; border-bottom: 1px solid var(--line); color: var(--ink2); font-size: 14px; max-width: 60ch; }
+
+  footer { margin-top: 56px; padding-top: 18px; border-top: 3px solid var(--line-strong); }
+  footer p { margin: 0 0 6px; font-size: 12px; color: var(--mute); max-width: 86ch; }
 </style>
+
 <div class="wrap">
-  <header>
-    <div class="stripe" aria-hidden="true"><span class="s1"></span><span class="s2"></span><span class="s3"></span></div>
-    <div class="eyebrow">Maverick Studios · car search</div>
-    <h1>M4 Competition Watch</h1>
-    <p class="sub">BMW M4 Competition (F82) · 2016–2018 · up to ${gbp(criteria.priceMax)} · UK-wide, marketplaces + specialist dealers. Exceptional cars only: stock, history, honest owners — write-offs and modified cars are filtered out automatically.</p>
-    <div class="stamp"><span class="dot"></span>Data refreshed <b>${esc(updated)}</b> · scans run daily at 4pm UK</div>
+  <header class="mast">
+    <div class="tri" aria-hidden="true"><span class="a"></span><span class="b"></span><span class="c"></span></div>
+    <h1>M4 Competition<br><span class="thin">Watch</span></h1>
+    <div class="row">
+      <div class="specline">
+        <span class="micro">F82 · <b>2016–2018</b> · UP TO <b>£32,000</b> · UK-WIDE · STOCK CARS ONLY · WRITE-OFFS FILTERED</span>
+      </div>
+      <div class="stamp">
+        <span class="micro"><span class="live"></span>Data <b>${esc(updated)}</b> · SCAN DAILY 16:00 UK</span>
+      </div>
+    </div>
   </header>
 
-  <div class="tiles">
-    <div class="tile"><div class="n">${inBudget.length}</div><div class="l">In budget</div></div>
-    <div class="tile"><div class="n">${watch.length}</div><div class="l">Worth watching</div></div>
-    <div class="tile"><div class="n">${newToday.length}</div><div class="l">New today</div></div>
-    <div class="tile"><div class="n">${drops.length}</div><div class="l">Price drops</div></div>
+  <div class="stats">
+    <div><span class="n accent display">${inBudget.length}</span><span class="micro">In budget</span></div>
+    <div><span class="n display">${watch.length}</span><span class="micro">Worth watching</span></div>
+    <div><span class="n display">${newToday.length}</span><span class="micro">New today</span></div>
+    <div><span class="n display">${drops.length}</span><span class="micro">Price drops</span></div>
   </div>
 
   <section>
-    <h2>In budget — ≤ ${gbp(criteria.priceMax)}</h2>
+    <div class="sechead">
+      <h2>In budget</h2>
+      <span class="micro">≤ ${gbp(criteria.priceMax)} · ranked by score</span>
+    </div>
     ${
       inBudget.length
-        ? `<div class="grid">${inBudget.map((l, i) => card(l, i)).join('')}</div>`
+        ? `<ol class="ledger">${inBudget.map((l, i) => entry(l, i + 1, { top: i === 0 })).join('')}</ol>`
         : `<div class="empty">Nothing inside ${gbp(criteria.priceMax)} today. Competition cars at this money are rare and sell fast — the watch list below is where the next one usually comes from.</div>`
     }
   </section>
@@ -221,15 +325,18 @@ const html = `<title>M4 Competition Watch</title>
   ${
     watch.length
       ? `<section>
-    <h2>Worth watching — just over budget</h2>
-    <p class="sec-note">Asking ${gbp(criteria.priceMax)}–${gbp(criteria.watchPriceMax)}: negotiable into range, especially past 30 days listed or after a price drop.</p>
-    <div class="grid">${watch.map((l) => card(l, -1)).join('')}</div>
+    <div class="sechead">
+      <h2>Worth watching</h2>
+      <span class="micro">${gbp(criteria.priceMax)}–${gbp(criteria.watchPriceMax)} · negotiable into range</span>
+    </div>
+    <ol class="ledger">${watch.map((l, i) => entry(l, inBudget.length + i + 1)).join('')}</ol>
   </section>`
       : ''
   }
 
   <footer>
-    Values compared against a simple market model (2017 Competition, 40k miles ≈ £34k, adjusted for year and mileage) — a negative delta means priced under the model. Always verify with an HPI check, full MOT history and an independent inspection before buying. Photos © their listing sources; follow the listing link for the full gallery.
+    <p>MODEL — prices compared against a mileage-and-year-adjusted market benchmark (2017 Competition, 40k miles ≈ £34k). "Under model" means priced below expectation; deltas are shown only when year and mileage are verified.</p>
+    <p>Always confirm with an HPI check, full MOT history and an independent inspection before buying. Photos © their listing sources — follow the listing link for full galleries.</p>
   </footer>
 </div>
 `;
