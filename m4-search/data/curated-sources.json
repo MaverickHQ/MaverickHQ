@@ -1,0 +1,12 @@
+{
+  "comment": "Specialist dealers and extra sources scanned daily. Maintained by the daily curation pass — searchUrl entries are mined with generic extractors (JSON-LD / __NEXT_DATA__); 'listings' entries are added verbatim when a car is found agentically.",
+  "sources": [
+    { "name": "EAG Specialist Cars", "searchUrl": "https://www.eagspecialistcars.co.uk/used-cars/bmw/m4-competition" },
+    { "name": "Dick Lovett (BMW approved)", "searchUrl": "https://www.dicklovett.co.uk/bmw/used-cars/m4/trim/competition" },
+    { "name": "Halliwell Jones (BMW approved)", "searchUrl": "https://www.halliwelljones.co.uk/bmw/used-cars/m4-competition" },
+    { "name": "Parkers", "searchUrl": "https://www.parkers.co.uk/bmw/for-sale/trim-m4-competition-m/" },
+    { "name": "Exchange & Mart", "searchUrl": "https://www.exchangeandmart.co.uk/used-cars-for-sale/bmw/m4" },
+    { "name": "AA Cars", "searchUrl": "https://www.theaa.com/used-cars/bmw/m4" }
+  ],
+  "listings": []
+}
