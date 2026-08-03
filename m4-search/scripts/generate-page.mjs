@@ -97,6 +97,7 @@ function entry(l, idx, { top = false } = {}) {
   })();
   const meta = [
     l.year ?? '2016–18',
+    l.gearbox === 'manual' ? 'MANUAL' : l.gearbox || null,
     kmi(l.mileage),
     l.sellerName || l.source,
     l.location ? esc(l.location) : null,

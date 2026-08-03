@@ -479,6 +479,13 @@ async function enrich(listing) {
       listing.year ??
       parseYear(listing.title) ??
       parseYear(html.match(/\b20\d{2}\s*\(\s*\d{2}\s*(?:reg|plate)\s*\)/i)?.[0]);
+    // Gearbox from the full page: explicit spec fields first, then unambiguous phrases.
+    if (!listing.gearbox) {
+      const spec = html.match(/(?:transmission|gearbox)["'\s:<>/spanbdiv]{0,60}?(manual|semi[- ]?automatic|semi[- ]?auto|automatic|dct|dsg)/i)?.[1];
+      if (spec) listing.gearbox = /manual/i.test(spec) ? 'manual' : 'DCT';
+      else if (/\b(6[- ]speed manual|manual gearbox|three pedals)\b/i.test(html)) listing.gearbox = 'manual';
+      else if (/\b(dct|m double[- ]clutch|semi[- ]?auto(matic)?)\b/i.test(html)) listing.gearbox = 'DCT';
+    }
   } catch (e) {
     log(`enrich failed for ${listing.url} — ${e.message}`);
   }
