@@ -1,6 +1,7 @@
 # M4 Competition Watch
 
-Daily UK-wide search for an exceptional BMW M4 Competition (F82), 2016–2018, up to £32,000 —
+Daily UK-wide search for an exceptional BMW M4 (F82), 2016–2018, up to £32,000 — two lanes:
+Competition (any gearbox) and manual non-Competition cars —
 marketplaces plus specialist dealers, with automatic filtering of write-offs and modified cars.
 
 ## How it works

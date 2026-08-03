@@ -178,6 +178,7 @@ function normalise(raw, source) {
   if (!/m4/.test(text)) return null;
   if (/convertible|cabriolet/.test(text)) return null; // coupé focus
   const isCompetition = /competition|comp pack|450\s?(bhp|hp|ps)/.test(text);
+  const manualFlag = /\b(6[- ]speed )?manual( gearbox| transmission)?\b/.test(text);
 
   const redFlag =
     /\b(cat\s?[sncd]\b|category\s?[sncd]\b|salvage|damaged|spares or repair|non[- ]runner)\b/.test(
@@ -194,6 +195,7 @@ function normalise(raw, source) {
     year,
     mileage,
     isCompetition,
+    manualFlag,
     redFlag,
     modFlag,
     sellerType: raw.sellerType || null,
@@ -205,7 +207,9 @@ function normalise(raw, source) {
 }
 
 function withinCriteria(l) {
-  if (!l.isCompetition || l.redFlag) return false;
+  // Two lanes: any-gearbox Competition, or manual non-Competition.
+  if (l.redFlag) return false;
+  if (!l.isCompetition && !(l.manualFlag || l.gearbox === 'manual')) return false;
   if (l.year && (l.year < CRITERIA.yearMin || l.year > CRITERIA.yearMax)) return false;
   return l.price <= CRITERIA.watchPriceMax;
 }
@@ -214,7 +218,7 @@ function withinCriteria(l) {
 
 async function srcEbay() {
   const url =
-    'https://www.ebay.co.uk/sch/i.html?_nkw=bmw+m4+competition&_sacat=9801&_udhi=34500&_udlo=20000&LH_ItemCondition=3000';
+    'https://www.ebay.co.uk/sch/i.html?_nkw=bmw+m4&_sacat=9801&_udhi=34500&_udlo=20000&LH_ItemCondition=3000';
   const html = await get(url);
   const items = [];
   // eBay search results: each card contains a link, title, price and image.
@@ -518,8 +522,11 @@ async function mirrorImage(listing) {
 /* ---------------- scoring ---------------- */
 
 function score(l) {
-  // Benchmark: £34k for a 40k-mile 2017 Competition; mileage at ~9p/mile.
-  const expected = 34000 + (l.year ? (l.year - 2017) * 1200 : 0) - ((l.mileage ?? 55000) - 40000) * 0.09;
+  // Benchmark: £34k for a 40k-mile 2017 Competition; base cars ~£3.5k below; ~9p/mile.
+  const expected =
+    (l.isCompetition ? 34000 : 30500) +
+    (l.year ? (l.year - 2017) * 1200 : 0) -
+    ((l.mileage ?? 55000) - 40000) * 0.09;
   const value = expected - l.price;
   let s = value / 100;
   const text = `${l.title} ${l.description}`.toLowerCase();
@@ -530,6 +537,8 @@ function score(l) {
   if (/adaptive/.test(text)) s += 3;
   if (/carbon (interior|trim|pack)/.test(text)) s += 2;
   if (l.sellerType === 'specialist') s += 8;
+  if (l.gearbox === 'manual' || (!l.isCompetition && l.manualFlag)) s += 8; // rarity
+
   if (l.modFlag) s -= 30;
   if ((l.mileage ?? 60000) < 45000) s += 6;
   if (l.mileage == null) s -= 25; // unverified mileage: don't let a cheap ad outrank known-good cars
@@ -589,6 +598,14 @@ async function main() {
       delete merged[id];
       continue;
     }
+    // Manual-lane cars must actually be manual: drop text-claimed manuals the
+    // detail page reveals as DCT.
+    if (!l.isCompetition && l.gearbox === 'DCT') {
+      log(`dropped after enrich (non-comp is DCT): ${l.url}`);
+      delete merged[id];
+      continue;
+    }
+    l.category = l.isCompetition ? 'competition' : 'manual';
     await mirrorImage(l);
     score(l);
     merged[id] = {

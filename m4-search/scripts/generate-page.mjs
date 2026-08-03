@@ -42,8 +42,10 @@ const live = Object.values(data.listings || {}).filter(
   (l) => !l.stale && (l.year == null || (l.year >= criteria.yearMin && l.year <= criteria.yearMax)),
 );
 live.sort((a, b) => (b.score ?? -999) - (a.score ?? -999));
-const inBudget = live.filter((l) => l.price <= criteria.priceMax);
-const watch = live.filter((l) => l.price > criteria.priceMax);
+const comp = live.filter((l) => l.category !== 'manual');
+const manuals = live.filter((l) => l.category === 'manual');
+const inBudget = comp.filter((l) => l.price <= criteria.priceMax);
+const watch = comp.filter((l) => l.price > criteria.priceMax);
 
 const today = data.updatedAt.slice(0, 10);
 const newToday = live.filter((l) => l.firstSeen === today);
@@ -52,8 +54,8 @@ const drops = live.filter((l) => {
   return h.length >= 2 && h[h.length - 1].price < h[h.length - 2].price;
 });
 
-// First new-today car in display order (in-budget by score, then watch list).
-const firstNewId = [...inBudget, ...watch].find((l) => l.firstSeen === today)?.id ?? null;
+// First new-today car in display order (in-budget by score, then watch, then manuals).
+const firstNewId = [...inBudget, ...watch, ...manuals].find((l) => l.firstSeen === today)?.id ?? null;
 
 const updated = new Date(data.updatedAt)
   .toLocaleString('en-GB', {
@@ -122,6 +124,7 @@ function entry(l, idx, { top = false } = {}) {
     </div>
     <div class="deal">
       <span class="price">${gbp(l.price)}</span>
+      ${l.price > criteria.priceMax ? `<span class="delta">${gbp(l.price - criteria.priceMax)} OVER BUDGET</span>` : ''}
       ${lastDrop ? `<span class="delta drop">▼ ${gbp(lastDrop)} PRICE DROP</span>` : ''}
       ${value != null && value < 0 ? `<span class="delta under">${gbp(-value)} UNDER MODEL</span>` : ''}
       ${value != null && value >= 0 ? `<span class="delta">MODEL ${gbp(l.expectedPrice)}</span>` : ''}
@@ -323,7 +326,7 @@ const html = `<title>M4 Competition Watch</title>
     <h1>M4 Competition<br><span class="thin">Watch</span></h1>
     <div class="row">
       <div class="specline">
-        <span class="micro">F82 · <b>2016–2018</b> · UP TO <b>£32,000</b> · UK-WIDE · STOCK CARS ONLY · WRITE-OFFS FILTERED</span>
+        <span class="micro">F82 · <b>2016–2018</b> · UP TO <b>£32,000</b> · <b>COMPETITION</b> (ANY GEARBOX) + <b>MANUAL</b> NON-COMP · UK-WIDE · STOCK CARS ONLY</span>
       </div>
       <div class="stamp">
         <span class="micro"><span class="live"></span>Data <b>${esc(updated)}</b> · SCAN DAILY 16:00 UK</span>
@@ -370,8 +373,20 @@ const html = `<title>M4 Competition Watch</title>
       : ''
   }
 
+  <section id="manuals">
+    <div class="sechead">
+      <h2>Manual watch</h2>
+      <span class="micro">Non-Competition · manual gearbox only · ${manuals.length} live</span>
+    </div>
+    ${
+      manuals.length
+        ? `<ol class="ledger">${manuals.map((l, i) => entry(l, comp.length + i + 1)).join('')}</ol>`
+        : `<div class="empty">No manual non-Competition F82s live in the scan today. UK manuals are genuinely rare — a small single-digit share of cars — and tend to surface a few times a month. This section is watched on every daily scan and new finds count toward your 4pm notification.</div>`
+    }
+  </section>
+
   <footer>
-    <p>MODEL — prices compared against a mileage-and-year-adjusted market benchmark (2017 Competition, 40k miles ≈ £34k). "Under model" means priced below expectation; deltas are shown only when year and mileage are verified.</p>
+    <p>MODEL — prices compared against a mileage-and-year-adjusted market benchmark (2017 Competition, 40k miles ≈ £34k; non-Competition cars ≈ £3.5k less). "Under model" means priced below expectation; deltas are shown only when year and mileage are verified.</p>
     <p>Always confirm with an HPI check, full MOT history and an independent inspection before buying. Photos © their listing sources — follow the listing link for full galleries.</p>
   </footer>
 </div>
