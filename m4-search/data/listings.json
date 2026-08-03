@@ -5,7 +5,7 @@
     "priceMax": 32000,
     "watchPriceMax": 34500
   },
-  "updatedAt": "2026-08-03T16:35:34.178Z",
+  "updatedAt": "2026-08-03T16:50:40.298Z",
   "listings": {
     "9e7a136842f9": {
       "id": "9e7a136842f9",
@@ -67,7 +67,9 @@
           "price": 21495
         }
       ],
-      "gearbox": "DCT"
+      "gearbox": "DCT",
+      "manualFlag": false,
+      "category": "competition"
     },
     "757e3769c7e2": {
       "id": "757e3769c7e2",
@@ -99,7 +101,9 @@
           "date": "2026-08-03",
           "price": 26999
         }
-      ]
+      ],
+      "manualFlag": false,
+      "category": "competition"
     },
     "22217f540a7a": {
       "id": "22217f540a7a",
@@ -132,7 +136,9 @@
           "price": 33500
         }
       ],
-      "gearbox": "DCT"
+      "gearbox": "DCT",
+      "manualFlag": false,
+      "category": "competition"
     },
     "e7c73d4b65d1": {
       "id": "e7c73d4b65d1",
@@ -165,7 +171,9 @@
           "price": 26695
         }
       ],
-      "gearbox": "DCT"
+      "gearbox": "DCT",
+      "manualFlag": false,
+      "category": "competition"
     },
     "abdbef759aae": {
       "id": "abdbef759aae",
@@ -198,7 +206,9 @@
           "price": 27990
         }
       ],
-      "gearbox": "DCT"
+      "gearbox": "DCT",
+      "manualFlag": false,
+      "category": "competition"
     },
     "c355613656fd": {
       "id": "c355613656fd",
@@ -259,7 +269,9 @@
           "date": "2026-08-03",
           "price": 23795
         }
-      ]
+      ],
+      "manualFlag": false,
+      "category": "competition"
     },
     "e0b9b13e4aa3": {
       "id": "e0b9b13e4aa3",
@@ -292,7 +304,9 @@
           "price": 30495
         }
       ],
-      "gearbox": "DCT"
+      "gearbox": "DCT",
+      "manualFlag": false,
+      "category": "competition"
     },
     "edb296126d17": {
       "id": "edb296126d17",
@@ -351,6 +365,37 @@
         }
       ],
       "stale": true
+    },
+    "5e4c9d4e0a01": {
+      "id": "5e4c9d4e0a01",
+      "url": "https://www.pistonheads.com/buy/listing/20399453",
+      "source": "PistonHeads",
+      "title": "Used 2018 BMW M4 for sale",
+      "price": 28595,
+      "year": 2018,
+      "mileage": null,
+      "isCompetition": true,
+      "manualFlag": false,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/4-series/3-0-biturbo-gpf-competition-dct-euro-6-s-s-2dr/bmw-4-series-3-0-biturbo-gpf-competition-dct-euro-6-s-s-2dr-1437974156-1.jpg",
+      "description": "This 2018 BMW M4 BiTurbo Competition is presented with a clear vehicle history check, offering peace of mind for its next owner. Under the bonnet, a powerful 3.0 litre petrol engine, compliant with Euro 6 emissions standards, delivers exhilara...</p>",
+      "gearbox": "DCT",
+      "category": "competition",
+      "image": "images/5e4c9d4e0a01.jpg",
+      "expectedPrice": 33850,
+      "score": 28,
+      "firstSeen": "2026-08-03",
+      "lastSeen": "2026-08-03",
+      "priceHistory": [
+        {
+          "date": "2026-08-03",
+          "price": 28595
+        }
+      ]
     }
   }
 }
