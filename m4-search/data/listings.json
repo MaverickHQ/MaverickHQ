@@ -5,7 +5,7 @@
     "priceMax": 32000,
     "watchPriceMax": 34500
   },
-  "updatedAt": "2026-08-01T10:51:24.113Z",
+  "updatedAt": "2026-08-03T16:17:45.546Z",
   "listings": {
     "9e7a136842f9": {
       "id": "9e7a136842f9",
@@ -33,7 +33,8 @@
           "date": "2026-08-01",
           "price": 26990
         }
-      ]
+      ],
+      "stale": true
     },
     "92dbb73a5eaa": {
       "id": "92dbb73a5eaa",
@@ -55,10 +56,14 @@
       "expectedPrice": 32650,
       "score": 77,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-01",
+      "lastSeen": "2026-08-03",
       "priceHistory": [
         {
           "date": "2026-08-01",
+          "price": 21495
+        },
+        {
+          "date": "2026-08-03",
           "price": 21495
         }
       ]
@@ -83,10 +88,14 @@
       "expectedPrice": 32424,
       "score": 54,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-01",
+      "lastSeen": "2026-08-03",
       "priceHistory": [
         {
           "date": "2026-08-01",
+          "price": 26999
+        },
+        {
+          "date": "2026-08-03",
           "price": 26999
         }
       ]
@@ -106,15 +115,19 @@
       "sellerName": null,
       "location": null,
       "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-m4-coupe-competition-package/bmw-m4-3-0-m4-coupe-competition-package-1469865479-1.jpg",
-      "description": "For sale BMW M4 with the Competition Pack in Alpine White. 444bhp. Very Low miles with full BMW history  and  a great spec with around GBP 5000 of options.   Upgrades include - ??Carbon Front Splitter, Splitter Covers  and  Rear Spoiler.  Fact...</p>",
+      "description": "For sale BMW M4 with the Competition Pack in Alpine White. 444bhp. Very Low miles with full BMW history  and  a great spec with around GBP 5000 of options.   Upgrades include - ▪️Carbon Front Splitter, Splitter Covers  and  Rear Spoiler.  Fact...</p>",
       "image": "images/22217f540a7a.jpg",
       "expectedPrice": 36145,
       "score": 32,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-01",
+      "lastSeen": "2026-08-03",
       "priceHistory": [
         {
           "date": "2026-08-01",
+          "price": 33500
+        },
+        {
+          "date": "2026-08-03",
           "price": 33500
         }
       ]
@@ -139,10 +152,14 @@
       "expectedPrice": 32650,
       "score": 35,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-01",
+      "lastSeen": "2026-08-03",
       "priceHistory": [
         {
           "date": "2026-08-01",
+          "price": 26695
+        },
+        {
+          "date": "2026-08-03",
           "price": 26695
         }
       ]
@@ -167,10 +184,14 @@
       "expectedPrice": 32328,
       "score": 46,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-01",
+      "lastSeen": "2026-08-03",
       "priceHistory": [
         {
           "date": "2026-08-01",
+          "price": 27990
+        },
+        {
+          "date": "2026-08-03",
           "price": 27990
         }
       ]
@@ -201,7 +222,8 @@
           "date": "2026-08-01",
           "price": 27501
         }
-      ]
+      ],
+      "stale": true
     },
     "51aefa61abf7": {
       "id": "51aefa61abf7",
@@ -223,10 +245,14 @@
       "expectedPrice": 31450,
       "score": 52,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-01",
+      "lastSeen": "2026-08-03",
       "priceHistory": [
         {
           "date": "2026-08-01",
+          "price": 23795
+        },
+        {
+          "date": "2026-08-03",
           "price": 23795
         }
       ]
@@ -251,10 +277,14 @@
       "expectedPrice": 33621,
       "score": 37,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-01",
+      "lastSeen": "2026-08-03",
       "priceHistory": [
         {
           "date": "2026-08-01",
+          "price": 30495
+        },
+        {
+          "date": "2026-08-03",
           "price": 30495
         }
       ]
@@ -285,7 +315,8 @@
           "date": "2026-08-01",
           "price": 22340
         }
-      ]
+      ],
+      "stale": true
     },
     "fa3340fe6f2f": {
       "id": "fa3340fe6f2f",
@@ -313,7 +344,8 @@
           "date": "2026-08-01",
           "price": 28990
         }
-      ]
+      ],
+      "stale": true
     }
   }
 }
