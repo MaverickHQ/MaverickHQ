@@ -6,6 +6,9 @@
     { "name": "Exchange & Mart", "searchUrl": "https://www.exchangeandmart.co.uk/used-cars-for-sale/bmw/m4" },
     { "name": "AA Cars", "searchUrl": "https://www.theaa.com/used-cars/bmw/m4" },
     { "name": "Gumtree", "searchUrl": "https://www.gumtree.com/search?search_category=cars&vehicle_make=bmw&q=m4%20competition" },
+    { "name": "Gumtree M2", "searchUrl": "https://www.gumtree.com/search?search_category=cars&vehicle_make=bmw&q=m2%20manual" },
+    { "name": "AA Cars M2", "searchUrl": "https://www.theaa.com/used-cars/bmw/m2" },
+    { "name": "cinch M2", "searchUrl": "https://www.cinch.co.uk/used-cars/bmw/m2" },
     { "name": "Car & Classic", "searchUrl": "https://www.carandclassic.com/search?q=bmw%20m4%20competition" },
     { "name": "cinch", "searchUrl": "https://www.cinch.co.uk/used-cars/bmw/m4" }
   ],

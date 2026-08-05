@@ -42,10 +42,12 @@ const live = Object.values(data.listings || {}).filter(
   (l) => !l.stale && (l.year == null || (l.year >= criteria.yearMin && l.year <= criteria.yearMax)),
 );
 live.sort((a, b) => (b.score ?? -999) - (a.score ?? -999));
-const comp = live.filter((l) => l.category !== 'manual');
+const comp = live.filter((l) => l.category !== 'manual' && l.category !== 'm2');
 const manuals = live.filter((l) => l.category === 'manual');
+const m2s = live.filter((l) => l.category === 'm2');
 const inBudget = comp.filter((l) => l.price <= criteria.priceMax);
 const watch = comp.filter((l) => l.price > criteria.priceMax);
+const inBudgetAll = live.filter((l) => l.price <= criteria.priceMax);
 
 const today = data.updatedAt.slice(0, 10);
 const newToday = live.filter((l) => l.firstSeen === today);
@@ -54,8 +56,9 @@ const drops = live.filter((l) => {
   return h.length >= 2 && h[h.length - 1].price < h[h.length - 2].price;
 });
 
-// First new-today car in display order (in-budget by score, then watch, then manuals).
-const firstNewId = [...inBudget, ...watch, ...manuals].find((l) => l.firstSeen === today)?.id ?? null;
+// First new-today car in display order (in-budget by score, then watch, then manual lanes).
+const firstNewId =
+  [...inBudget, ...watch, ...manuals, ...m2s].find((l) => l.firstSeen === today)?.id ?? null;
 
 const updated = new Date(data.updatedAt)
   .toLocaleString('en-GB', {
@@ -326,7 +329,7 @@ const html = `<title>M4 Competition Watch</title>
     <h1>M4 Competition<br><span class="thin">Watch</span></h1>
     <div class="row">
       <div class="specline">
-        <span class="micro">F82 · <b>2016–2018</b> · UP TO <b>£32,000</b> · <b>COMPETITION</b> (ANY GEARBOX) + <b>MANUAL</b> NON-COMP · UK-WIDE · STOCK CARS ONLY</span>
+        <span class="micro">UP TO <b>£35,000</b> · <b>M4 COMPETITION</b> '16–'18 (ANY GEARBOX) + <b>MANUAL M4</b> + <b>MANUAL M2</b> (F87 '16–'21) · UK-WIDE · STOCK CARS ONLY</span>
       </div>
       <div class="stamp">
         <span class="micro"><span class="live"></span>Data <b>${esc(updated)}</b> · SCAN DAILY 16:00 UK</span>
@@ -335,7 +338,7 @@ const html = `<title>M4 Competition Watch</title>
   </header>
 
   <div class="stats">
-    <div><span class="n accent display">${inBudget.length}</span><span class="micro">In budget</span></div>
+    <div><span class="n accent display">${inBudgetAll.length}</span><span class="micro">In budget</span></div>
     ${
       watch.length
         ? `<a class="stat-link" href="#watching"><span class="n display">${watch.length}</span><span class="micro">Worth watching<span class="jump" aria-hidden="true"> ↓</span></span></a>`
@@ -351,7 +354,7 @@ const html = `<title>M4 Competition Watch</title>
 
   <section>
     <div class="sechead">
-      <h2>In budget</h2>
+      <h2>M4 Competition — in budget</h2>
       <span class="micro">≤ ${gbp(criteria.priceMax)} · ranked by score</span>
     </div>
     ${
@@ -375,7 +378,7 @@ const html = `<title>M4 Competition Watch</title>
 
   <section id="manuals">
     <div class="sechead">
-      <h2>Manual watch</h2>
+      <h2>M4 manual watch</h2>
       <span class="micro">Non-Competition · manual gearbox only · ${manuals.length} live</span>
     </div>
     ${
@@ -385,8 +388,20 @@ const html = `<title>M4 Competition Watch</title>
     }
   </section>
 
+  <section id="m2s">
+    <div class="sechead">
+      <h2>M2 manual watch</h2>
+      <span class="micro">F87 '16–'21 · manual gearbox only · N55 + Competition · ${m2s.length} live</span>
+    </div>
+    ${
+      m2s.length
+        ? `<ol class="ledger">${m2s.map((l, i) => entry(l, comp.length + manuals.length + i + 1)).join('')}</ol>`
+        : `<div class="empty">No manual F87 M2s inside ${gbp(criteria.watchPriceMax)} in today's scan. Manual Competitions cluster at £33–38k and move quickly; N55 manuals surface more often around £25–29k. Watched on every scan — new finds count toward your 4pm notification.</div>`
+    }
+  </section>
+
   <footer>
-    <p>MODEL — prices compared against a mileage-and-year-adjusted market benchmark (2017 Competition, 40k miles ≈ £34k; non-Competition cars ≈ £3.5k less). "Under model" means priced below expectation; deltas are shown only when year and mileage are verified.</p>
+    <p>MODEL — prices compared against mileage-and-year-adjusted benchmarks (M4 Competition '17 @ 40k mi ≈ £34k, base ≈ £3.5k less; manual M2 Competition '19 ≈ £35.5k; N55 M2 '17 ≈ £28.5k). "Under model" means priced below expectation; deltas shown only when year and mileage are verified.</p>
     <p>Always confirm with an HPI check, full MOT history and an independent inspection before buying. Photos © their listing sources — follow the listing link for full galleries.</p>
   </footer>
 </div>

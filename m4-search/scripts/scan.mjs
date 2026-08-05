@@ -29,8 +29,9 @@ const LISTINGS_PATH = join(DATA, 'listings.json');
 const CRITERIA = {
   yearMin: 2016,
   yearMax: 2018,
-  priceMax: 32000,
-  watchPriceMax: 34500, // near-misses worth negotiating down
+  priceMax: 35000,
+  watchPriceMax: 37500, // near-misses worth negotiating down
+  m2: { yearMin: 2016, yearMax: 2021 }, // F87 only — manual gearbox lane
 };
 
 const UA =
@@ -175,7 +176,9 @@ function normalise(raw, source) {
   const mileage = raw.mileage ?? parseMiles(raw.mileageText) ?? parseMiles(raw.description);
 
   if (!price || price < 15000) return null; // parts/replicas/noise
-  if (!/m4/.test(text)) return null;
+  const inTitle = title.toLowerCase();
+  const isM2 = /\bm2\b/.test(inTitle) || (/\bm2\b/.test(text) && !/\bm4\b/.test(text));
+  if (!/\bm4\b/.test(text) && !isM2) return null;
   if (/convertible|cabriolet/.test(text)) return null; // coupé focus
   const isCompetition = /competition|comp pack|450\s?(bhp|hp|ps)/.test(text);
   const manualFlag = /\b(6[- ]speed )?manual( gearbox| transmission)?\b/.test(text);
@@ -194,6 +197,7 @@ function normalise(raw, source) {
     price,
     year,
     mileage,
+    model: isM2 ? 'M2' : 'M4',
     isCompetition,
     manualFlag,
     redFlag,
@@ -207,10 +211,15 @@ function normalise(raw, source) {
 }
 
 function withinCriteria(l) {
-  // Two lanes: any-gearbox Competition, or manual non-Competition.
+  // Three lanes: any-gearbox M4 Competition, manual non-Comp M4, manual F87 M2.
   if (l.redFlag) return false;
-  if (!l.isCompetition && !(l.manualFlag || l.gearbox === 'manual')) return false;
-  if (l.year && (l.year < CRITERIA.yearMin || l.year > CRITERIA.yearMax)) return false;
+  if (l.model === 'M2') {
+    if (!(l.manualFlag || l.gearbox === 'manual')) return false;
+    if (l.year && (l.year < CRITERIA.m2.yearMin || l.year > CRITERIA.m2.yearMax)) return false;
+  } else {
+    if (!l.isCompetition && !(l.manualFlag || l.gearbox === 'manual')) return false;
+    if (l.year && (l.year < CRITERIA.yearMin || l.year > CRITERIA.yearMax)) return false;
+  }
   return l.price <= CRITERIA.watchPriceMax;
 }
 
@@ -218,7 +227,7 @@ function withinCriteria(l) {
 
 async function srcEbay() {
   const url =
-    'https://www.ebay.co.uk/sch/i.html?_nkw=bmw+m4&_sacat=9801&_udhi=34500&_udlo=20000&LH_ItemCondition=3000';
+    'https://www.ebay.co.uk/sch/i.html?_nkw=bmw+m4+m2&_sacat=9801&_udhi=37500&_udlo=18000&LH_ItemCondition=3000';
   const html = await get(url);
   const items = [];
   // eBay search results: each card contains a link, title, price and image.
@@ -246,10 +255,13 @@ async function srcPistonheads() {
   const objs = [];
   let html = '';
   for (const path of [
-    '/buy/bmw/f82-m4?price-to=34500',
-    '/buy/bmw/f82-m4?price-to=34500&page=2',
-    '/buy/bmw/f82-m4?price-to=34500&page=3',
-    '/buy/cars/bmw-m4?price-to=34500',
+    '/buy/bmw/f82-m4?price-to=37500',
+    '/buy/bmw/f82-m4?price-to=37500&page=2',
+    '/buy/bmw/f82-m4?price-to=37500&page=3',
+    '/buy/cars/bmw-m4?price-to=37500',
+    '/buy/bmw/f87-m2?price-to=37500',
+    '/buy/bmw/f87-m2?price-to=37500&page=2',
+    '/buy/cars/bmw-m2?price-to=37500',
   ]) {
     try {
       html = await get(`https://www.pistonheads.com${path}`);
@@ -522,11 +534,15 @@ async function mirrorImage(listing) {
 /* ---------------- scoring ---------------- */
 
 function score(l) {
-  // Benchmark: £34k for a 40k-mile 2017 Competition; base cars ~£3.5k below; ~9p/mile.
-  const expected =
-    (l.isCompetition ? 34000 : 30500) +
-    (l.year ? (l.year - 2017) * 1200 : 0) -
-    ((l.mileage ?? 55000) - 40000) * 0.09;
+  // Benchmarks at 40k miles: 2017 M4 Comp £34k (base −£3.5k); 2019 manual M2
+  // Comp £35.5k; 2017 N55 M2 £28.5k. Mileage ~9p/mile.
+  const base =
+    l.model === 'M2'
+      ? l.isCompetition
+        ? 35500 + ((l.year ?? 2019) - 2019) * 1200
+        : 28500 + ((l.year ?? 2017) - 2017) * 1000
+      : (l.isCompetition ? 34000 : 30500) + (l.year ? (l.year - 2017) * 1200 : 0);
+  const expected = base - ((l.mileage ?? 55000) - 40000) * 0.09;
   const value = expected - l.price;
   let s = value / 100;
   const text = `${l.title} ${l.description}`.toLowerCase();
@@ -598,14 +614,14 @@ async function main() {
       delete merged[id];
       continue;
     }
-    // Manual-lane cars must actually be manual: drop text-claimed manuals the
+    // Manual lanes must actually be manual: drop text-claimed manuals the
     // detail page reveals as DCT.
-    if (!l.isCompetition && l.gearbox === 'DCT') {
-      log(`dropped after enrich (non-comp is DCT): ${l.url}`);
+    if ((l.model === 'M2' || !l.isCompetition) && l.gearbox === 'DCT') {
+      log(`dropped after enrich (manual lane is DCT): ${l.url}`);
       delete merged[id];
       continue;
     }
-    l.category = l.isCompetition ? 'competition' : 'manual';
+    l.category = l.model === 'M2' ? 'm2' : l.isCompetition ? 'competition' : 'manual';
     await mirrorImage(l);
     score(l);
     merged[id] = {
