@@ -2,10 +2,14 @@
   "criteria": {
     "yearMin": 2016,
     "yearMax": 2018,
-    "priceMax": 32000,
-    "watchPriceMax": 34500
+    "priceMax": 35000,
+    "watchPriceMax": 37500,
+    "m2": {
+      "yearMin": 2016,
+      "yearMax": 2021
+    }
   },
-  "updatedAt": "2026-08-03T16:50:40.298Z",
+  "updatedAt": "2026-08-05T17:09:06.070Z",
   "listings": {
     "9e7a136842f9": {
       "id": "9e7a136842f9",
@@ -56,7 +60,7 @@
       "expectedPrice": 32650,
       "score": 77,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-03",
+      "lastSeen": "2026-08-05",
       "priceHistory": [
         {
           "date": "2026-08-01",
@@ -65,11 +69,16 @@
         {
           "date": "2026-08-03",
           "price": 21495
+        },
+        {
+          "date": "2026-08-05",
+          "price": 21495
         }
       ],
       "gearbox": "DCT",
       "manualFlag": false,
-      "category": "competition"
+      "category": "competition",
+      "model": "M4"
     },
     "757e3769c7e2": {
       "id": "757e3769c7e2",
@@ -91,7 +100,7 @@
       "expectedPrice": 32424,
       "score": 54,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-03",
+      "lastSeen": "2026-08-05",
       "priceHistory": [
         {
           "date": "2026-08-01",
@@ -100,10 +109,15 @@
         {
           "date": "2026-08-03",
           "price": 26999
+        },
+        {
+          "date": "2026-08-05",
+          "price": 26999
         }
       ],
       "manualFlag": false,
-      "category": "competition"
+      "category": "competition",
+      "model": "M4"
     },
     "22217f540a7a": {
       "id": "22217f540a7a",
@@ -120,12 +134,12 @@
       "sellerName": null,
       "location": null,
       "imageUrl": "https://img.pistonheads.com/LargeSize/bmw/m4/3-0-m4-coupe-competition-package/bmw-m4-3-0-m4-coupe-competition-package-1469865479-1.jpg",
-      "description": "For sale BMW M4 with the Competition Pack in Alpine White. 444bhp. Very Low miles with full BMW history  and  a great spec with around GBP 5000 of options.   Upgrades include - ▪️Carbon Front Splitter, Splitter Covers  and  Rear Spoiler.  Fact...</p>",
+      "description": "For sale BMW M4 with the Competition Pack in Alpine White. 444bhp. Very Low miles with full BMW history  and  a great spec with around GBP 5000 of options.   Upgrades include - ??Carbon Front Splitter, Splitter Covers  and  Rear Spoiler.  Fact...</p>",
       "image": "images/22217f540a7a.jpg",
       "expectedPrice": 36145,
       "score": 32,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-03",
+      "lastSeen": "2026-08-05",
       "priceHistory": [
         {
           "date": "2026-08-01",
@@ -134,18 +148,23 @@
         {
           "date": "2026-08-03",
           "price": 33500
+        },
+        {
+          "date": "2026-08-05",
+          "price": 33500
         }
       ],
       "gearbox": "DCT",
       "manualFlag": false,
-      "category": "competition"
+      "category": "competition",
+      "model": "M4"
     },
     "e7c73d4b65d1": {
       "id": "e7c73d4b65d1",
       "url": "https://www.pistonheads.com/buy/listing/20779731",
       "source": "PistonHeads",
       "title": "Used 2017 BMW M4 for sale",
-      "price": 26695,
+      "price": 26595,
       "year": 2017,
       "mileage": null,
       "isCompetition": true,
@@ -158,9 +177,9 @@
       "description": "RARE SAKHIR ORANGE  HUGE SPEC  CRANK HUB DONE  BMW M4 COMPETITION If youre looking for an M4 that genuinely stands out from the crowd, this BMW M4 3.0 BiTurbo Competition DCT is the one. Finished in stunning and rare Sakhir Orange with Extende...</p>",
       "image": "images/e7c73d4b65d1.jpg",
       "expectedPrice": 32650,
-      "score": 35,
+      "score": 36,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-03",
+      "lastSeen": "2026-08-05",
       "priceHistory": [
         {
           "date": "2026-08-01",
@@ -169,11 +188,16 @@
         {
           "date": "2026-08-03",
           "price": 26695
+        },
+        {
+          "date": "2026-08-05",
+          "price": 26595
         }
       ],
       "gearbox": "DCT",
       "manualFlag": false,
-      "category": "competition"
+      "category": "competition",
+      "model": "M4"
     },
     "abdbef759aae": {
       "id": "abdbef759aae",
@@ -195,7 +219,7 @@
       "expectedPrice": 32328,
       "score": 46,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-03",
+      "lastSeen": "2026-08-05",
       "priceHistory": [
         {
           "date": "2026-08-01",
@@ -204,11 +228,16 @@
         {
           "date": "2026-08-03",
           "price": 27990
+        },
+        {
+          "date": "2026-08-05",
+          "price": 27990
         }
       ],
       "gearbox": "DCT",
       "manualFlag": false,
-      "category": "competition"
+      "category": "competition",
+      "model": "M4"
     },
     "c355613656fd": {
       "id": "c355613656fd",
@@ -271,7 +300,8 @@
         }
       ],
       "manualFlag": false,
-      "category": "competition"
+      "category": "competition",
+      "stale": true
     },
     "e0b9b13e4aa3": {
       "id": "e0b9b13e4aa3",
@@ -306,7 +336,8 @@
       ],
       "gearbox": "DCT",
       "manualFlag": false,
-      "category": "competition"
+      "category": "competition",
+      "stale": true
     },
     "edb296126d17": {
       "id": "edb296126d17",
@@ -357,14 +388,21 @@
       "expectedPrice": 32650,
       "score": 12,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-01",
+      "lastSeen": "2026-08-05",
       "priceHistory": [
         {
           "date": "2026-08-01",
           "price": 28990
+        },
+        {
+          "date": "2026-08-05",
+          "price": 28990
         }
       ],
-      "stale": true
+      "model": "M4",
+      "manualFlag": false,
+      "gearbox": "DCT",
+      "category": "competition"
     },
     "5e4c9d4e0a01": {
       "id": "5e4c9d4e0a01",
@@ -395,7 +433,8 @@
           "date": "2026-08-03",
           "price": 28595
         }
-      ]
+      ],
+      "stale": true
     }
   }
 }
