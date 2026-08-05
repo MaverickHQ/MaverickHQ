@@ -214,7 +214,8 @@ function withinCriteria(l) {
   // Three lanes: any-gearbox M4 Competition, manual non-Comp M4, manual F87 M2.
   if (l.redFlag) return false;
   if (l.model === 'M2') {
-    if (!(l.manualFlag || l.gearbox === 'manual')) return false;
+    // Gearbox is usually unknown until detail-page enrichment — the manual-only
+    // test for this lane runs post-enrich, not here.
     if (l.year && (l.year < CRITERIA.m2.yearMin || l.year > CRITERIA.m2.yearMax)) return false;
   } else {
     if (!l.isCompetition && !(l.manualFlag || l.gearbox === 'manual')) return false;
@@ -614,9 +615,15 @@ async function main() {
       delete merged[id];
       continue;
     }
-    // Manual lanes must actually be manual: drop text-claimed manuals the
-    // detail page reveals as DCT.
-    if ((l.model === 'M2' || !l.isCompetition) && l.gearbox === 'DCT') {
+    // Manual lanes need positive manual evidence once the detail page is read:
+    // M2s require it outright; non-Comp M4s are dropped when revealed as DCT.
+    if (/\bmanual\b/i.test(l.description || '')) l.manualFlag = true;
+    if (l.model === 'M2' && !(l.gearbox === 'manual' || l.manualFlag)) {
+      log(`dropped after enrich (M2 not verified manual): ${l.url}`);
+      delete merged[id];
+      continue;
+    }
+    if (l.gearbox === 'DCT' && (l.model === 'M2' || !l.isCompetition)) {
       log(`dropped after enrich (manual lane is DCT): ${l.url}`);
       delete merged[id];
       continue;
