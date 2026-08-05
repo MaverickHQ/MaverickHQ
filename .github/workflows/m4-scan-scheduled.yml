@@ -1,0 +1,44 @@
+name: M4/M2 watch scheduled scan
+
+# Scheduled backup for the daily 4pm UK refresh. GitHub only runs schedules
+# from the default branch, so this file lives on main and checks out the
+# working branch. It guarantees the DATA refresh; page republish and the
+# push notification happen when a Claude session next runs.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "10 15 * * *" # 16:10 UK during BST, 15:10 UK in winter
+
+permissions:
+  contents: write
+
+concurrency:
+  group: m4-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/bmw-m4-m3-search-9cjc9p
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run scan
+        run: node m4-search/scripts/scan.mjs
+
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add m4-search/data
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "m4-search: scheduled scan $(date -u +%F)"
+            git push
+          fi
