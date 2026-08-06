@@ -8,6 +8,10 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "10 15 * * *" # 16:10 UK during BST, 15:10 UK in winter
+    # Backup slot: GitHub occasionally fails to assign a runner to scheduled
+    # jobs at peak times. If the first run succeeded, this one finds no new
+    # data and commits nothing.
+    - cron: "40 18 * * *"
 
 permissions:
   contents: write
