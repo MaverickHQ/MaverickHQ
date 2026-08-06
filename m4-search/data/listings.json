@@ -7,9 +7,13 @@
     "m2": {
       "yearMin": 2016,
       "yearMax": 2021
+    },
+    "rs5": {
+      "yearMin": 2017,
+      "yearMax": 2023
     }
   },
-  "updatedAt": "2026-08-05T17:17:50.297Z",
+  "updatedAt": "2026-08-06T06:59:15.799Z",
   "listings": {
     "9e7a136842f9": {
       "id": "9e7a136842f9",
@@ -60,7 +64,7 @@
       "expectedPrice": 32650,
       "score": 77,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-05",
+      "lastSeen": "2026-08-06",
       "priceHistory": [
         {
           "date": "2026-08-01",
@@ -72,6 +76,10 @@
         },
         {
           "date": "2026-08-05",
+          "price": 21495
+        },
+        {
+          "date": "2026-08-06",
           "price": 21495
         }
       ],
@@ -100,7 +108,7 @@
       "expectedPrice": 32424,
       "score": 54,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-05",
+      "lastSeen": "2026-08-06",
       "priceHistory": [
         {
           "date": "2026-08-01",
@@ -112,6 +120,10 @@
         },
         {
           "date": "2026-08-05",
+          "price": 26999
+        },
+        {
+          "date": "2026-08-06",
           "price": 26999
         }
       ],
@@ -139,7 +151,7 @@
       "expectedPrice": 36145,
       "score": 32,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-05",
+      "lastSeen": "2026-08-06",
       "priceHistory": [
         {
           "date": "2026-08-01",
@@ -151,6 +163,10 @@
         },
         {
           "date": "2026-08-05",
+          "price": 33500
+        },
+        {
+          "date": "2026-08-06",
           "price": 33500
         }
       ],
@@ -179,7 +195,7 @@
       "expectedPrice": 32650,
       "score": 36,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-05",
+      "lastSeen": "2026-08-06",
       "priceHistory": [
         {
           "date": "2026-08-01",
@@ -191,6 +207,10 @@
         },
         {
           "date": "2026-08-05",
+          "price": 26595
+        },
+        {
+          "date": "2026-08-06",
           "price": 26595
         }
       ],
@@ -219,7 +239,7 @@
       "expectedPrice": 32328,
       "score": 46,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-05",
+      "lastSeen": "2026-08-06",
       "priceHistory": [
         {
           "date": "2026-08-01",
@@ -231,6 +251,10 @@
         },
         {
           "date": "2026-08-05",
+          "price": 27990
+        },
+        {
+          "date": "2026-08-06",
           "price": 27990
         }
       ],
@@ -402,7 +426,8 @@
       "model": "M4",
       "manualFlag": false,
       "gearbox": "DCT",
-      "category": "competition"
+      "category": "competition",
+      "stale": true
     },
     "5e4c9d4e0a01": {
       "id": "5e4c9d4e0a01",
@@ -435,6 +460,130 @@
         }
       ],
       "stale": true
+    },
+    "78b79b49a1f7": {
+      "id": "78b79b49a1f7",
+      "url": "https://www.pistonheads.com/buy/listing/20551254",
+      "source": "PistonHeads",
+      "title": "Used 2018 AUDI A5 for sale",
+      "price": 27390,
+      "year": 2018,
+      "mileage": 45,
+      "model": "RS5",
+      "isCompetition": false,
+      "manualFlag": false,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/audi/rs5/2-9-tfsi-v6-coupe-2dr-petrol-tiptronic-quattro-euro-6-s-s--450-ps/audi-rs5-2-9-tfsi-v6-coupe-2dr-petrol-tiptronic-quattro-euro-6-s-s--450-ps-1466168276-1.jpg",
+      "description": "This Audi RS5 2.9 V6 Coupe is finished in Navarra Blue. STAND-OUT FEATURES - Panoramic Glass Sunroof | 20in Alloy Wheels - 5-Arm-trapezoid Design Forged in Silver | RS Sports Exhaust System | Electric Memory Heated Front Seats | New Front &amp...</p>",
+      "category": "rs5",
+      "image": "images/78b79b49a1f7.jpg",
+      "expectedPrice": 36596,
+      "score": 103,
+      "firstSeen": "2026-08-06",
+      "lastSeen": "2026-08-06",
+      "priceHistory": [
+        {
+          "date": "2026-08-06",
+          "price": 27390
+        }
+      ]
+    },
+    "18bfe12d7d83": {
+      "id": "18bfe12d7d83",
+      "url": "https://www.pistonheads.com/buy/listing/20828701",
+      "source": "PistonHeads",
+      "title": "Used 2018 AUDI A5 for sale",
+      "price": 35995,
+      "year": 2018,
+      "mileage": null,
+      "model": "RS5",
+      "isCompetition": false,
+      "manualFlag": false,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/audi/rs5/2-9-tfsi-v6-coupe-2dr-petrol-tiptronic-quattro-euro-6-s-s--450-ps/audi-rs5-2-9-tfsi-v6-coupe-2dr-petrol-tiptronic-quattro-euro-6-s-s--450-ps-1473088408-1.jpg",
+      "description": "Crystal motor company are delighted to offer for sale this beautifully presented 2018 AUDI RS5 2.9 TFSI V6 Coupe 2dr Petrol Tiptronic quattro Euro 6 (s/s) (450 ps) finished in NARDO GREY. This car comes with TWO KEYS, TWO FORMER KEEPER, SERVIC...</p>",
+      "category": "rs5",
+      "image": "images/18bfe12d7d83.jpg",
+      "expectedPrice": 31650,
+      "score": -66,
+      "firstSeen": "2026-08-06",
+      "lastSeen": "2026-08-06",
+      "priceHistory": [
+        {
+          "date": "2026-08-06",
+          "price": 35995
+        }
+      ]
+    },
+    "7993c755a370": {
+      "id": "7993c755a370",
+      "url": "https://www.pistonheads.com/buy/listing/20662140",
+      "source": "PistonHeads",
+      "title": "Used 2019 AUDI A5 for sale",
+      "price": 31995,
+      "year": 2019,
+      "mileage": 62000,
+      "model": "RS5",
+      "isCompetition": false,
+      "manualFlag": false,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/audi/rs5/2-9-tfsi-v6-sport-edition-coupe-2dr-petrol-tiptronic-quattro-euro-6-s-s--450-ps/audi-rs5-2-9-tfsi-v6-sport-edition-coupe-2dr-petrol-tiptronic-quattro-euro-6-s-s--450-ps-1458784004-1.jpg",
+      "description": "The Audi RS5 is one of those cars that does everything well. It's properly quick when you want it to be, comfortable enough to use every day and, thanks to Audi's quattro system, inspires confidence whatever the weather. This 2019 Sport Editio...</p>",
+      "category": "rs5",
+      "image": "images/7993c755a370.jpg",
+      "expectedPrice": 32520,
+      "score": 5,
+      "firstSeen": "2026-08-06",
+      "lastSeen": "2026-08-06",
+      "priceHistory": [
+        {
+          "date": "2026-08-06",
+          "price": 31995
+        }
+      ]
+    },
+    "9c56abe602ef": {
+      "id": "9c56abe602ef",
+      "url": "https://www.theaa.com/used-cars/cardetails/73-1055877",
+      "source": "AA Cars RS5",
+      "title": "Audi RS5 2.9 TFSI V6 GPF Tiptronic quattro Euro 6 (s/s) 2dr",
+      "price": 27995,
+      "year": null,
+      "mileage": null,
+      "model": "RS5",
+      "isCompetition": false,
+      "manualFlag": false,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": "AA Cars RS5",
+      "location": null,
+      "imageUrl": "https://thumb.vcars.co.uk/vcarsdna/1055877_1.jpg",
+      "description": "",
+      "category": "rs5",
+      "image": "images/9c56abe602ef.jpg",
+      "expectedPrice": 31650,
+      "score": 2,
+      "firstSeen": "2026-08-06",
+      "lastSeen": "2026-08-06",
+      "priceHistory": [
+        {
+          "date": "2026-08-06",
+          "price": 27995
+        }
+      ]
     }
   }
 }
