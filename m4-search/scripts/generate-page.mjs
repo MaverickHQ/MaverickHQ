@@ -42,9 +42,10 @@ const live = Object.values(data.listings || {}).filter(
   (l) => !l.stale && (l.year == null || (l.year >= criteria.yearMin && l.year <= criteria.yearMax)),
 );
 live.sort((a, b) => (b.score ?? -999) - (a.score ?? -999));
-const comp = live.filter((l) => l.category !== 'manual' && l.category !== 'm2');
+const comp = live.filter((l) => !['manual', 'm2', 'rs5'].includes(l.category));
 const manuals = live.filter((l) => l.category === 'manual');
 const m2s = live.filter((l) => l.category === 'm2');
+const rs5s = live.filter((l) => l.category === 'rs5');
 const inBudget = comp.filter((l) => l.price <= criteria.priceMax);
 const watch = comp.filter((l) => l.price > criteria.priceMax);
 const inBudgetAll = live.filter((l) => l.price <= criteria.priceMax);
@@ -58,7 +59,7 @@ const drops = live.filter((l) => {
 
 // First new-today car in display order (in-budget by score, then watch, then manual lanes).
 const firstNewId =
-  [...inBudget, ...watch, ...manuals, ...m2s].find((l) => l.firstSeen === today)?.id ?? null;
+  [...inBudget, ...watch, ...manuals, ...m2s, ...rs5s].find((l) => l.firstSeen === today)?.id ?? null;
 
 const updated = new Date(data.updatedAt)
   .toLocaleString('en-GB', {
@@ -81,6 +82,10 @@ function specBits(l) {
   if (/adaptive/.test(text)) bits.push('ADAPTIVE SUSP');
   if (/carbon (interior|trim|pack)/.test(text)) bits.push('CARBON TRIM');
   if (/crank hub done|crank hub fix/.test(text)) bits.push('CRANK HUB DONE');
+  if (/sports? exhaust/.test(text)) bits.push('SPORTS EXHAUST');
+  if (/sonoma/.test(text)) bits.push('SONOMA GREEN');
+  else if (/nardo/.test(text)) bits.push('NARDO GREY');
+  if (/b&o|bang & olufsen|bang and olufsen/.test(text)) bits.push('B&O AUDIO');
   if (/sunroof/.test(text)) bits.push('SUNROOF');
   return bits;
 }
@@ -102,7 +107,7 @@ function entry(l, idx, { top = false } = {}) {
   })();
   const meta = [
     l.year ?? '2016–18',
-    l.gearbox === 'manual' ? 'MANUAL' : l.gearbox || null,
+    l.gearbox === 'manual' ? 'MANUAL' : l.category === 'rs5' && l.gearbox ? 'AUTO' : l.gearbox || null,
     kmi(l.mileage),
     l.sellerName || l.source,
     l.location ? esc(l.location) : null,
@@ -329,7 +334,7 @@ const html = `<title>M4 Competition Watch</title>
     <h1>M4 Competition<br><span class="thin">Watch</span></h1>
     <div class="row">
       <div class="specline">
-        <span class="micro">UP TO <b>£35,000</b> · <b>M4 COMPETITION</b> '16–'18 (ANY GEARBOX) + <b>MANUAL M4</b> + <b>MANUAL M2</b> (F87 '16–'21) · UK-WIDE · STOCK CARS ONLY</span>
+        <span class="micro">UP TO <b>£35,000</b> · <b>M4 COMP</b> '16–'18 + <b>MANUAL M4</b> + <b>MANUAL M2</b> ('16–'21) + <b>RS5 B9 COUPÉ</b> ('17–'23) · UK-WIDE · STOCK CARS ONLY</span>
       </div>
       <div class="stamp">
         <span class="micro"><span class="live"></span>Data <b>${esc(updated)}</b> · SCAN DAILY 16:00 UK</span>
@@ -397,6 +402,18 @@ const html = `<title>M4 Competition Watch</title>
       m2s.length
         ? `<ol class="ledger">${m2s.map((l, i) => entry(l, comp.length + manuals.length + i + 1)).join('')}</ol>`
         : `<div class="empty">No manual F87 M2s inside ${gbp(criteria.watchPriceMax)} in today's scan. Manual Competitions cluster at £33–38k and move quickly; N55 manuals surface more often around £25–29k. Watched on every scan — new finds count toward your 4pm notification.</div>`
+    }
+  </section>
+
+  <section id="rs5s">
+    <div class="sechead">
+      <h2>RS5 B9 watch</h2>
+      <span class="micro">Coupé only · '17–'23 · 2.9 biturbo · ${rs5s.length} live</span>
+    </div>
+    ${
+      rs5s.length
+        ? `<ol class="ledger">${rs5s.map((l, i) => entry(l, comp.length + manuals.length + m2s.length + i + 1)).join('')}</ol>`
+        : `<div class="empty">No B9 RS5 coupés inside ${gbp(criteria.watchPriceMax)} in today's scan. Coupés start around £27k and sports-exhaust cars move fastest — Sportbacks and B8 V8s are filtered out. Watched on every scan; new finds count toward your 4pm notification.</div>`
     }
   </section>
 

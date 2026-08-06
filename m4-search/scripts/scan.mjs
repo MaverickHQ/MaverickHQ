@@ -32,6 +32,7 @@ const CRITERIA = {
   priceMax: 35000,
   watchPriceMax: 37500, // near-misses worth negotiating down
   m2: { yearMin: 2016, yearMax: 2021 }, // F87 only — manual gearbox lane
+  rs5: { yearMin: 2017, yearMax: 2023 }, // B9 coupé only — Sportbacks and B8 V8s excluded
 };
 
 const UA =
@@ -177,10 +178,12 @@ function normalise(raw, source) {
 
   if (!price || price < 15000) return null; // parts/replicas/noise
   const inTitle = title.toLowerCase();
-  const isM2 = /\bm2\b/.test(inTitle) || (/\bm2\b/.test(text) && !/\bm4\b/.test(text));
-  if (!/\bm4\b/.test(text) && !isM2) return null;
+  const isRS5 = /\brs\s?5\b/.test(text);
+  const isM2 = !isRS5 && (/\bm2\b/.test(inTitle) || (/\bm2\b/.test(text) && !/\bm4\b/.test(text)));
+  if (!/\bm4\b/.test(text) && !isM2 && !isRS5) return null;
   if (/convertible|cabriolet/.test(text)) return null; // coupé focus
-  const isCompetition = /competition|comp pack|450\s?(bhp|hp|ps)/.test(text);
+  if (isRS5 && /sportback|4[.\s]2|\bv8\b/.test(text)) return null; // B9 2-door only
+  const isCompetition = !isRS5 && /competition|comp pack|450\s?(bhp|hp|ps)/.test(text);
   const manualFlag = /\b(6[- ]speed )?manual( gearbox| transmission)?\b/.test(text);
 
   const redFlag =
@@ -197,7 +200,7 @@ function normalise(raw, source) {
     price,
     year,
     mileage,
-    model: isM2 ? 'M2' : 'M4',
+    model: isRS5 ? 'RS5' : isM2 ? 'M2' : 'M4',
     isCompetition,
     manualFlag,
     redFlag,
@@ -213,7 +216,10 @@ function normalise(raw, source) {
 function withinCriteria(l) {
   // Three lanes: any-gearbox M4 Competition, manual non-Comp M4, manual F87 M2.
   if (l.redFlag) return false;
-  if (l.model === 'M2') {
+  if (l.model === 'RS5') {
+    // Any gearbox (B9 is auto-only); Sportback/B8 exclusion happens in normalise.
+    if (l.year && (l.year < CRITERIA.rs5.yearMin || l.year > CRITERIA.rs5.yearMax)) return false;
+  } else if (l.model === 'M2') {
     // Gearbox is usually unknown until detail-page enrichment — the manual-only
     // test for this lane runs post-enrich, not here.
     if (l.year && (l.year < CRITERIA.m2.yearMin || l.year > CRITERIA.m2.yearMax)) return false;
@@ -263,6 +269,8 @@ async function srcPistonheads() {
     '/buy/bmw/f87-m2?price-to=37500',
     '/buy/bmw/f87-m2?price-to=37500&page=2',
     '/buy/cars/bmw-m2?price-to=37500',
+    '/buy/audi/rs5?price-to=37500',
+    '/buy/audi/rs5?price-to=37500&page=2',
   ]) {
     try {
       html = await get(`https://www.pistonheads.com${path}`);
@@ -538,11 +546,13 @@ function score(l) {
   // Benchmarks at 40k miles: 2017 M4 Comp £34k (base −£3.5k); 2019 manual M2
   // Comp £35.5k; 2017 N55 M2 £28.5k. Mileage ~9p/mile.
   const base =
-    l.model === 'M2'
-      ? l.isCompetition
-        ? 35500 + ((l.year ?? 2019) - 2019) * 1200
-        : 28500 + ((l.year ?? 2017) - 2017) * 1000
-      : (l.isCompetition ? 34000 : 30500) + (l.year ? (l.year - 2017) * 1200 : 0);
+    l.model === 'RS5'
+      ? 33000 + ((l.year ?? 2018) - 2018) * 1500
+      : l.model === 'M2'
+        ? l.isCompetition
+          ? 35500 + ((l.year ?? 2019) - 2019) * 1200
+          : 28500 + ((l.year ?? 2017) - 2017) * 1000
+        : (l.isCompetition ? 34000 : 30500) + (l.year ? (l.year - 2017) * 1200 : 0);
   const expected = base - ((l.mileage ?? 55000) - 40000) * 0.09;
   const value = expected - l.price;
   let s = value / 100;
@@ -553,6 +563,8 @@ function score(l) {
   if (/head[- ]up|hud/.test(text)) s += 3;
   if (/adaptive/.test(text)) s += 3;
   if (/carbon (interior|trim|pack)/.test(text)) s += 2;
+  if (l.model === 'RS5' && /sports? exhaust/.test(text)) s += 5; // the B9 must-have
+  if (l.model === 'RS5' && /sonoma|nardo/.test(text)) s += 2;
   if (l.sellerType === 'specialist') s += 8;
   if (l.gearbox === 'manual' || (!l.isCompetition && l.manualFlag)) s += 8; // rarity
 
@@ -618,17 +630,23 @@ async function main() {
     // Manual lanes need positive manual evidence once the detail page is read:
     // M2s require it outright; non-Comp M4s are dropped when revealed as DCT.
     if (/\bmanual\b/i.test(l.description || '')) l.manualFlag = true;
+    if (l.model === 'RS5' && /sportback/i.test(`${l.title} ${l.description}`)) {
+      log(`dropped after enrich (RS5 is a Sportback): ${l.url}`);
+      delete merged[id];
+      continue;
+    }
     if (l.model === 'M2' && !(l.gearbox === 'manual' || l.manualFlag)) {
       log(`dropped after enrich (M2 not verified manual): ${l.url}`);
       delete merged[id];
       continue;
     }
-    if (l.gearbox === 'DCT' && (l.model === 'M2' || !l.isCompetition)) {
+    if (l.gearbox === 'DCT' && (l.model === 'M2' || (l.model === 'M4' && !l.isCompetition))) {
       log(`dropped after enrich (manual lane is DCT): ${l.url}`);
       delete merged[id];
       continue;
     }
-    l.category = l.model === 'M2' ? 'm2' : l.isCompetition ? 'competition' : 'manual';
+    l.category =
+      l.model === 'RS5' ? 'rs5' : l.model === 'M2' ? 'm2' : l.isCompetition ? 'competition' : 'manual';
     await mirrorImage(l);
     score(l);
     merged[id] = {
