@@ -13,7 +13,7 @@
       "yearMax": 2023
     }
   },
-  "updatedAt": "2026-08-07T00:27:17.895Z",
+  "updatedAt": "2026-08-07T16:05:04.978Z",
   "listings": {
     "9e7a136842f9": {
       "id": "9e7a136842f9",
@@ -287,7 +287,7 @@
       "id": "c355613656fd",
       "url": "https://www.pistonheads.com/buy/listing/20765274",
       "source": "PistonHeads",
-      "title": "Advert",
+      "title": "Used 2018 BMW M4 for sale",
       "price": 27501,
       "year": 2018,
       "mileage": 66620,
@@ -303,14 +303,21 @@
       "expectedPrice": 32804,
       "score": 53,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-01",
+      "lastSeen": "2026-08-07",
       "priceHistory": [
         {
           "date": "2026-08-01",
           "price": 27501
+        },
+        {
+          "date": "2026-08-07",
+          "price": 27501
         }
       ],
-      "stale": true
+      "model": "M4",
+      "manualFlag": false,
+      "gearbox": "DCT",
+      "category": "competition"
     },
     "51aefa61abf7": {
       "id": "51aefa61abf7",
@@ -432,7 +439,7 @@
       "expectedPrice": 32650,
       "score": 12,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-05",
+      "lastSeen": "2026-08-07",
       "priceHistory": [
         {
           "date": "2026-08-01",
@@ -441,13 +448,16 @@
         {
           "date": "2026-08-05",
           "price": 28990
+        },
+        {
+          "date": "2026-08-07",
+          "price": 28990
         }
       ],
       "model": "M4",
       "manualFlag": false,
       "gearbox": "DCT",
-      "category": "competition",
-      "stale": true
+      "category": "competition"
     },
     "5e4c9d4e0a01": {
       "id": "5e4c9d4e0a01",
@@ -521,7 +531,7 @@
       "url": "https://www.pistonheads.com/buy/listing/20828701",
       "source": "PistonHeads",
       "title": "Used 2018 AUDI A5 for sale",
-      "price": 35995,
+      "price": 34995,
       "year": 2018,
       "mileage": null,
       "model": "RS5",
@@ -537,7 +547,7 @@
       "category": "rs5",
       "image": "images/18bfe12d7d83.jpg",
       "expectedPrice": 31650,
-      "score": -66,
+      "score": -56,
       "firstSeen": "2026-08-06",
       "lastSeen": "2026-08-07",
       "priceHistory": [
@@ -547,7 +557,7 @@
         },
         {
           "date": "2026-08-07",
-          "price": 35995
+          "price": 34995
         }
       ]
     },
@@ -618,6 +628,99 @@
         {
           "date": "2026-08-07",
           "price": 27995
+        }
+      ]
+    },
+    "002f3c624b00": {
+      "id": "002f3c624b00",
+      "url": "https://www.pistonheads.com/buy/listing/20714054",
+      "source": "PistonHeads",
+      "title": "Used 2018 AUDI A5 for sale",
+      "price": 29995,
+      "year": 2018,
+      "mileage": 53178,
+      "model": "RS5",
+      "isCompetition": false,
+      "manualFlag": false,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/audi/rs5/2-9-tfsi-v6-coupe-2dr-petrol-tiptronic-quattro-euro-6-s-s--450-ps/audi-rs5-2-9-tfsi-v6-coupe-2dr-petrol-tiptronic-quattro-euro-6-s-s--450-ps-1462861796-1.jpg",
+      "description": "This 2018 Audi RS5 comes with a clear vehicle history check and an MOT valid until February 2027, providing peace of mind for your next purchase. This model features a powerful 2.9L TFSI V6 petrol engine paired with a four-wheel drive system, ...</p>",
+      "category": "rs5",
+      "image": "images/002f3c624b00.jpg",
+      "expectedPrice": 31814,
+      "score": 18,
+      "firstSeen": "2026-08-07",
+      "lastSeen": "2026-08-07",
+      "priceHistory": [
+        {
+          "date": "2026-08-07",
+          "price": 29995
+        }
+      ]
+    },
+    "e4c34e011c9e": {
+      "id": "e4c34e011c9e",
+      "url": "https://www.pistonheads.com/buy/listing/20267948",
+      "source": "PistonHeads",
+      "title": "Used 2018 AUDI A5 for sale",
+      "price": 29495,
+      "year": 2018,
+      "mileage": null,
+      "model": "RS5",
+      "isCompetition": false,
+      "manualFlag": false,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/audi/rs5/2-9-tfsi-v6-carbon-edition-coupe-2dr-petrol-tiptronic-quattro-euro-6-s-s--450-ps/audi-rs5-2-9-tfsi-v6-carbon-edition-coupe-2dr-petrol-tiptronic-quattro-euro-6-s-s--450-ps-1473482239-1.jpg",
+      "description": "Audi RS5 2.9 V6 TFSI Carbon Edition Coupe First Registered June 2018. Finished in Floret Silver with Black Nappa Leather Super Sport Seats and Contrast Crescendo Red Stitching. Specification Includes Electric Memory Heated and Massage Leather ...</p>",
+      "category": "rs5",
+      "image": "images/e4c34e011c9e.jpg",
+      "expectedPrice": 31650,
+      "score": -3,
+      "firstSeen": "2026-08-07",
+      "lastSeen": "2026-08-07",
+      "priceHistory": [
+        {
+          "date": "2026-08-07",
+          "price": 29495
+        }
+      ]
+    },
+    "77252cc87dae": {
+      "id": "77252cc87dae",
+      "url": "https://www.pistonheads.com/buy/listing/20793427",
+      "source": "PistonHeads",
+      "title": "Used 2018 AUDI A5 for sale",
+      "price": 33995,
+      "year": 2018,
+      "mileage": null,
+      "model": "RS5",
+      "isCompetition": false,
+      "manualFlag": false,
+      "redFlag": false,
+      "modFlag": false,
+      "sellerType": null,
+      "sellerName": null,
+      "location": null,
+      "imageUrl": "https://img.pistonheads.com/LargeSize/audi/rs5/2-9-tfsi-v6-carbon-edition-coupe-2dr-petrol-tiptronic-quattro-euro-6-s-s--450-ps/audi-rs5-2-9-tfsi-v6-carbon-edition-coupe-2dr-petrol-tiptronic-quattro-euro-6-s-s--450-ps-1468765310-1.jpg",
+      "description": "Crystal motor company are delighted to offer for sale this beautifully presented 2018 AUDI RS5 2.9 TFSI V6 Carbon Edition Coupe 2dr Petrol Tiptronic quattro Euro 6 (s/s) (450 ps) finished in GLACIER WHITE. This car comes with TWO KEYS, THREE F...</p>",
+      "category": "rs5",
+      "image": "images/77252cc87dae.jpg",
+      "expectedPrice": 31650,
+      "score": -48,
+      "firstSeen": "2026-08-07",
+      "lastSeen": "2026-08-07",
+      "priceHistory": [
+        {
+          "date": "2026-08-07",
+          "price": 33995
         }
       ]
     }
