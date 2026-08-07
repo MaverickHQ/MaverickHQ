@@ -13,7 +13,7 @@
       "yearMax": 2023
     }
   },
-  "updatedAt": "2026-08-07T16:05:04.978Z",
+  "updatedAt": "2026-08-07T19:23:48.018Z",
   "listings": {
     "9e7a136842f9": {
       "id": "9e7a136842f9",
@@ -395,7 +395,7 @@
       "url": "https://www.pistonheads.com/buy/listing/20579969",
       "source": "PistonHeads",
       "title": "Used 2017 BMW M4 for sale",
-      "price": 22340,
+      "price": 21995,
       "year": 2017,
       "mileage": null,
       "isCompetition": true,
@@ -408,16 +408,23 @@
       "description": "This 2017 BMW M4 BiTurbo Competition is a standout example, boasting a Euro 6 compliant 3.0L petrol engine. This model, in Competition trim, offers a compelling blend of performance and technology. It comes equipped with Apple CarPlay Preparat...</p>",
       "image": "images/edb296126d17.jpg",
       "expectedPrice": 32650,
-      "score": 78,
+      "score": 82,
       "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-01",
+      "lastSeen": "2026-08-07",
       "priceHistory": [
         {
           "date": "2026-08-01",
           "price": 22340
+        },
+        {
+          "date": "2026-08-07",
+          "price": 21995
         }
       ],
-      "stale": true
+      "model": "M4",
+      "manualFlag": false,
+      "gearbox": "DCT",
+      "category": "competition"
     },
     "fa3340fe6f2f": {
       "id": "fa3340fe6f2f",
