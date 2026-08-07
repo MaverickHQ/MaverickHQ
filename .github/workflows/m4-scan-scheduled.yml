@@ -34,6 +34,8 @@ jobs:
 
       - name: Run scan
         run: node m4-search/scripts/scan.mjs
+        env:
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
 
       - name: Commit results
         run: |
