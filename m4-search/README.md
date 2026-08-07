@@ -36,3 +36,12 @@ marketplaces plus specialist dealers, with automatic filtering of write-offs and
 node m4-search/scripts/scan.mjs          # needs open internet (GitHub runner)
 node m4-search/scripts/generate-page.mjs # pure transform, runs anywhere
 ```
+
+## AutoTrader access (optional)
+
+AutoTrader blocks datacenter IPs, so the scanner skips it unless a scraping-proxy
+key exists. To enable: sign up at scraperapi.com (free tier covers one scan/day),
+then add the key as a repository Actions secret named `SCRAPERAPI_KEY`
+(Settings → Secrets and variables → Actions). The next scan picks up AutoTrader
+(M4, manual M2, RS5 coupé searches) automatically. Note: scraping AutoTrader is
+against their ToS — keep volumes personal-scale.

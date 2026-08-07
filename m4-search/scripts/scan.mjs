@@ -38,10 +38,22 @@ const CRITERIA = {
 const UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
 
+// Optional scraping-proxy key (repo Actions secret SCRAPERAPI_KEY). Cloudflare
+// blocks GitHub's IPs on some sites (AutoTrader above all); routing those
+// requests through a residential-IP proxy is the only working path. Without
+// the key those sources are skipped, as before.
+const PROXY_KEY = process.env.SCRAPERAPI_KEY || '';
+const NEEDS_PROXY = /autotrader\.co\.uk|atcdn\.co\.uk|ebay\.co\.uk|ebayimg\.com|carandclassic\.com/;
+const proxied = (url) =>
+  PROXY_KEY && NEEDS_PROXY.test(url)
+    ? `https://api.scraperapi.com/?api_key=${PROXY_KEY}&url=${encodeURIComponent(url)}`
+    : url;
+
 const log = (...a) => console.log(new Date().toISOString(), ...a);
 
 async function get(url, { asText = true, timeout = 30000, referer } = {}) {
-  const res = await fetch(url, {
+  if (!PROXY_KEY && NEEDS_PROXY.test(url)) throw new Error(`skipped (no SCRAPERAPI_KEY): ${url}`);
+  const res = await fetch(proxied(url), {
     headers: {
       'User-Agent': UA,
       'Accept': asText
@@ -316,9 +328,13 @@ async function srcPistonheads() {
 }
 
 async function srcAutotrader() {
-  const url =
-    'https://www.autotrader.co.uk/car-search?make=BMW&model=M4&price-to=34500&year-from=2016&year-to=2018&postcode=SW1A1AA';
-  const html = await get(url);
+  const urls = [
+    'https://www.autotrader.co.uk/car-search?make=BMW&model=M4&price-to=37500&year-from=2016&year-to=2018&postcode=SW1A1AA',
+    'https://www.autotrader.co.uk/car-search?make=Audi&model=RS5&price-to=37500&year-from=2017&year-to=2023&body-type=Coupe&postcode=SW1A1AA',
+    'https://www.autotrader.co.uk/car-search?make=BMW&model=M2&price-to=37500&year-from=2016&year-to=2021&transmission=Manual&postcode=SW1A1AA',
+  ];
+  let html = '';
+  for (const url of urls) html += await get(url);
   const items = [];
   for (const b of jsonLdBlocks(html).flat()) {
     const list = b?.itemListElement || (b?.['@type'] === 'ItemList' ? b.item : null) || [];
