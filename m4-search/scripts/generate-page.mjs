@@ -21,6 +21,8 @@ const FONT = join(ROOT, 'assets', 'archivo-black-latin-400-normal.woff2');
 
 const data = JSON.parse(readFileSync(join(DATA, 'listings.json'), 'utf8'));
 const { criteria } = data;
+// Presence of data/PAUSED switches the header stamp to a paused notice.
+const paused = existsSync(join(DATA, 'PAUSED'));
 
 const esc = (s) =>
   String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -337,7 +339,11 @@ const html = `<title>M4 Competition Watch</title>
         <span class="micro">UP TO <b>£35,000</b> · <b>M4 COMP</b> '16–'18 + <b>MANUAL M4</b> + <b>MANUAL M2</b> ('16–'21) + <b>RS5 B9 COUPÉ</b> ('17–'23) · UK-WIDE · STOCK CARS ONLY</span>
       </div>
       <div class="stamp">
-        <span class="micro"><span class="live"></span>Data <b>${esc(updated)}</b> · SCAN DAILY 16:00 UK</span>
+        <span class="micro">${
+          paused
+            ? `<span class="live" style="background: var(--mute);"></span>SCANS PAUSED · LAST DATA <b>${esc(updated)}</b>`
+            : `<span class="live"></span>Data <b>${esc(updated)}</b> · SCAN DAILY 16:00 UK`
+        }</span>
       </div>
     </div>
   </header>
